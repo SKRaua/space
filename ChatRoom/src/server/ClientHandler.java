@@ -51,7 +51,7 @@ public class ClientHandler implements Runnable {
             try {
                 socket.close();
                 clientHandlers.remove(this);
-                broadcastMessage("System: " + username + " 离开聊天。");
+                broadcastMessage("[System]: " + username + " 离开聊天。");
             } catch (IOException e) {
                 e.printStackTrace();
             }
