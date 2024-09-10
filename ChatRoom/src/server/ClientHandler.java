@@ -21,30 +21,64 @@ public class ClientHandler implements Runnable {
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
-
-            // 用户登录认证
-            out.println("Enter your username:");
-            this.username = in.readLine();
-            System.out.println(username + " has joined the chat.");
-            broadcastMessage("System: " + username + " has joined the chat!");
+            out.println("[/login <用户名>] 来登陆");
+            out.println("[/private <用户名> <信息>] 发起私聊");
+            out.println("[/clientList] 获取用户列表");
 
             String message;
             while ((message = in.readLine()) != null) {
-                if (message.startsWith("/private")) {
-                    sendPrivateMessage(message);
+                if (message.startsWith("/login")) {// 判断登陆指令
+                    loginHandler(message);
+                } else if (username != null) {
+                    if (message.startsWith("/")) {// 判断指令信息
+                        if (message.startsWith("/private")) {
+                            sendPrivateMessage(message);
+                        } else if (message.startsWith("/clientList")) {
+                            clientListMessage();
+                        }
+                    } else {// 默认：发送信息
+                        broadcastMessage(username + ": " + message);
+                    }
                 } else {
-                    broadcastMessage(username + ": " + message);
+                    out.println("请先登陆！");
+                    out.println("[/login <用户名>] 来登陆");
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
                 socket.close();
                 clientHandlers.remove(this);
-                broadcastMessage("System: " + username + " has left the chat.");
+                broadcastMessage("System: " + username + " 离开聊天。");
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    private void loginHandler(String message) {
+        String[] parts = message.split(" ", 2);
+        if (parts.length == 2) {
+            String username = parts[1];
+            // String password = parts[2];
+            // 用户登录认证
+            boolean userExists = false;
+            // 检查用户名是否已经存在
+            for (ClientHandler clientHandler : clientHandlers) {
+                if (clientHandler.username != null && clientHandler.username.equals(username)) {
+                    out.println(username + " 用户名已存在，请重试。");
+                    out.println("[/login <用户名>] 来登陆");
+                    userExists = true;
+                    break;
+                }
+            }
+            // 如果用户名不存在，允许登录
+            if (!userExists) {
+                this.username = username;
+                out.println("欢迎 " + username + "！");
+                broadcastMessage("[System]: " + username + " 加入聊天");
             }
         }
     }
@@ -68,7 +102,15 @@ public class ClientHandler implements Runnable {
                     return;
                 }
             }
-            this.out.println("User " + targetUsername + " not found.");
+            this.out.println("未找到用户 " + targetUsername);
         }
+    }
+
+    private void clientListMessage() {
+        this.out.println(clientHandlers.size() + "在线用户：");
+        for (ClientHandler clientHandler : clientHandlers) {
+            this.out.print("[" + clientHandler.username + "] ");
+        }
+        this.out.println();
     }
 }

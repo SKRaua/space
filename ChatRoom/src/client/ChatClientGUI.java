@@ -35,6 +35,7 @@ public class ChatClientGUI {
         frame.getContentPane().add(panel, BorderLayout.SOUTH);
 
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
