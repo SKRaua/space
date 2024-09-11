@@ -2,7 +2,8 @@ import java.time.LocalDate;
 
 public class Test {
     public static void main(String[] args) {
-        Teacher zhang = new Teacher(2022214986, "张三", true, LocalDate.of(2004, 8, 24), "国际学院", "辅导员", 9999);
+        
+        PersonInterface zhang = new Teacher(2022214986, "张三", true, LocalDate.of(2004, 8, 24), "国际学院", "辅导员", 9999);
         System.out.println(zhang.toString());
         System.out.println(zhang.call());
         System.out.println(zhang.information());
