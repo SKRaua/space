@@ -1,26 +1,35 @@
-import java.time.LocalDate;
-
 public abstract class PersonClass {
-    protected int perCode;
+    protected String id;
     protected String name;
-    protected boolean sex;
-    protected LocalDate birthDate;
+    protected String gender;
+    protected String birthDate;
 
-    public PersonClass(int perCode, String name, boolean sex, LocalDate birthDate) {
-        this.perCode = perCode;
+    public PersonClass(String id, String name, String gender, String birthDate) {
+        this.id = id;
         this.name = name;
-        this.sex = sex;
+        this.gender = gender;
         this.birthDate = birthDate;
     }
 
-    public int getperCode() {
-        return perCode;
-    }
-    // ......
-
-    public String toString() {
-        return perCode + ": " + name;
+    public String getID() {
+        return id;
     }
 
-    public abstract String call();
+    public String getName() {
+        return name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void displayInfo() {
+        System.out.println("编号: " + id);
+        System.out.println("姓名: " + name);
+        System.out.println("性别: " + gender);
+        System.out.println("出生日期: " + birthDate);
+    }
+
+    // 抽象方法
+    public abstract String getRole();
 }
