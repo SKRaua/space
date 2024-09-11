@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+/**
+ * 客户端处理器
+ */
 public class ClientHandler implements Runnable {
     private Socket socket;
     private PrintWriter out;
@@ -11,10 +14,17 @@ public class ClientHandler implements Runnable {
     private String username;
     private Set<ClientHandler> clientHandlers;
 
+    /**
+     * 实例客户端处理器
+     * 
+     * @param socket         通信套接字
+     * @param clientHandlers 在线客户端集合
+     */
     public ClientHandler(Socket socket, Set<ClientHandler> clientHandlers) {
         this.socket = socket;
         this.clientHandlers = clientHandlers;
     }
+
 
     @Override
     public void run() {
