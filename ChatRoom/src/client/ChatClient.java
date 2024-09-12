@@ -6,13 +6,13 @@ import java.net.*;
 public class ChatClient {
     private Socket socket;
     private BufferedReader in;
-    private DataOutputStream out;
+    private PrintWriter out;
 
     public ChatClient(String serverAddress, int serverPort) {
         try {
             this.socket = new Socket(serverAddress, serverPort);
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            DataInputStream in = new DataInputStream(socket.getInputStream());
+            this.out = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
