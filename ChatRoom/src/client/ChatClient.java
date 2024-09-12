@@ -4,26 +4,32 @@ import java.io.*;
 import java.net.*;
 
 public class ChatClient {
+    private String username;
     private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
+    // private BufferedReader in;
+    private DataInputStream in;
+    private DataOutputStream out;
+    // private PrintWriter out;
 
-    public ChatClient(String serverAddress, int serverPort) {
-        try {
-            this.socket = new Socket(serverAddress, serverPort);
-            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.out = new PrintWriter(socket.getOutputStream(), true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public ChatClient(String serverAddress, int serverPort) throws IOException {
+
+        this.socket = new Socket(serverAddress, serverPort);
+        // this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.in = new DataInputStream(socket.getInputStream());
+        // this.out = new PrintWriter(socket.getOutputStream(), true);
+        this.out = new DataOutputStream(socket.getOutputStream());
+
     }
 
-    public void sendMessage(String message) {
-        out.println(message);
+    public void sendMessage(String message) throws IOException {
+        // out.println(message);
+        out.writeUTF(message); // 使用 writeUTF 发送文本消息
+        out.flush();
     }
 
     public String receiveMessage() throws IOException {
-        return in.readLine();
+        return in.readUTF();
+        // return in.readLine();
     }
 
     public void sendFile(File file) throws IOException {
@@ -35,26 +41,26 @@ public class ChatClient {
         out.flush();
     }
 
-    // public void sendFile(java.io.File file) throws IOException {
-    //     // 打开文件输入流
-    //     try (FileInputStream fileInputStream = new FileInputStream(file)) {
-    //         // 通过输出流发送文件
-    //         OutputStream outputStream = socket.getOutputStream();
-    //         byte[] buffer = new byte[4096];
-    //         int bytesRead;
-    
-    //         // 发送文件名
-    //         PrintWriter writer = new PrintWriter(outputStream, true);
-    //         writer.println("FILE:" + file.getName());
-    
-    //         // 发送文件内容
-    //         while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-    //             outputStream.write(buffer, 0, bytesRead);
-    //         }
-    
-    //         outputStream.flush();
-    //     }
-    //}
-    
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void closeLink() throws IOException {
+        this.socket.close();
+        this.in.close();
+        this.out.close();
+    }
+
+    public void reLink() throws IOException {
+        this.closeLink();
+        // this.socket = new Socket(this.socket.getInetAddress(),
+        // this.socket.getPort());
+        this.socket = new Socket("localhost", 12345);
+        this.in = new DataInputStream(socket.getInputStream());
+        this.out = new DataOutputStream(socket.getOutputStream());
+    }
 }

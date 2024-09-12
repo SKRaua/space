@@ -9,6 +9,8 @@ public class ChatClientGUI {
     private JFrame frame;
     private JTextField inputField;
     private JTextArea chatArea;
+    private JButton sendButton;
+    private JButton sendFileButton;
 
     public ChatClientGUI(ChatClient client) {
         this.client = client;
@@ -25,14 +27,13 @@ public class ChatClientGUI {
         inputField = new JTextField(40);
         chatArea = new JTextArea(20, 40);
         chatArea.setEditable(false);
-        JButton sendButton = new JButton("发送");
+        sendButton = new JButton("发送");
         //
-        JButton sendFileButton = new JButton("发送文件");
+        sendFileButton = new JButton("发送文件");
 
         // 为输入框和发送按钮添加监听
         inputField.addActionListener(e -> sendMessage());
         sendButton.addActionListener(e -> sendMessage());
-
         sendFileButton.addActionListener(e -> sendFile());
 
         // 边缘布局，上方聊天区域（使用滚动面板），下方输入框和发送按钮
@@ -54,9 +55,13 @@ public class ChatClientGUI {
      * 发送信息
      */
     private void sendMessage() {
-        String message = inputField.getText();
-        client.sendMessage(message);
-        inputField.setText("");
+        try {
+            String message = inputField.getText();
+            client.sendMessage(message);
+            inputField.setText("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -67,7 +72,13 @@ public class ChatClientGUI {
             try {// 循环读取收到的信息
                 String message;
                 while ((message = client.receiveMessage()) != null) {
-                    chatArea.append(message + "\n");
+                    if (message.startsWith("/login")) {
+                        String[] parts = message.split(" ", 2);
+                        String username = parts[1];
+                        client.setUsername(username);
+                    } else {
+                        chatArea.append(message + "\n");
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -79,6 +90,10 @@ public class ChatClientGUI {
      * 发送文件
      */
     private void sendFile() {
+        if (client.getUsername() == null) {
+            chatArea.append("请先登陆");
+            return;
+        }
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
