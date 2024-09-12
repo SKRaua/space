@@ -10,6 +10,7 @@ public class ChatClientGUI {
     private JTextField inputField;
     private JTextArea chatArea;
     private JButton sendButton;
+    private JButton sendFileButton;
 
     public ChatClientGUI(ChatClient client) {
         this.client = client;
@@ -27,16 +28,21 @@ public class ChatClientGUI {
         chatArea = new JTextArea(20, 40);
         chatArea.setEditable(false);
         sendButton = new JButton("发送");
+        //
+        sendFileButton = new JButton("发送文件");
 
         // 为输入框和发送按钮添加监听
         inputField.addActionListener(e -> sendMessage());
         sendButton.addActionListener(e -> sendMessage());
+        sendFileButton.addActionListener(e -> sendFile());
 
         // 边缘布局，上方聊天区域（使用滚动面板），下方输入框和发送按钮
         frame.getContentPane().add(new JScrollPane(chatArea), BorderLayout.CENTER);
         JPanel panel = new JPanel();
         panel.add(inputField);
         panel.add(sendButton);
+        //
+        panel.add(sendFileButton);
         frame.getContentPane().add(panel, BorderLayout.SOUTH);
 
         frame.pack();// 窗口自适应大小
@@ -66,11 +72,41 @@ public class ChatClientGUI {
             try {// 循环读取收到的信息
                 String message;
                 while ((message = client.receiveMessage()) != null) {
-                    chatArea.append(message + "\n");
+                    if (message.startsWith("/login")) {
+                        String[] parts = message.split(" ", 2);
+                        String username = parts[1];
+                        client.setUsername(username);
+                    } else {
+                        chatArea.append(message + "\n");
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
     }
+
+    /**
+     * 发送文件
+     */
+    private void sendFile() {
+        if (client.getUsername() == null) {
+            chatArea.append("请先登陆");
+            return;
+        }
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            // 获取选择的文件
+            java.io.File file = fileChooser.getSelectedFile();
+            try {
+                client.sendFile(file); // 调用客户端的发送文件方法
+                chatArea.append("文件已发送: " + file.getName() + "\n");
+            } catch (IOException e) {
+                chatArea.append("发送文件失败: " + file.getName() + "\n");
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
