@@ -3,7 +3,14 @@
         "src"
     ],
     "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": [
-        "d:\\space\\mysql-connector-j-9.0.0\\mysql-connector-j-9.0.0.jar"
-    ]
+    "java.project.referencedLibraries": {
+        "include": [
+            "d:\\space\\mysql-connector-j-9.0.0\\mysql-connector-j-9.0.0.jar",
+            "/Users/zhouxinyang/Desktop/space/**/*.jar"
+        ],
+        "exclude": [
+            "ChatRoom.jar",
+            "/Users/zhouxinyang/Desktop/space/space/space.jar"
+        ]
+    }
 }

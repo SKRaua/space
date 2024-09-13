@@ -3,6 +3,7 @@
         "ChatRoom/src",
     ],
     "java.project.referencedLibraries": [
-        "ChatRoom/mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar"
+        "ChatRoom/mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar",
+        "mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar"
     ]
 }
