@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": [
+        "ChatRoom/src",
+        "test/src"
+    ],
+    "java.project.referencedLibraries": [
+        "/Users/zhouxinyang/Downloads/mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar"
+    ]
+}
