@@ -8,10 +8,12 @@ public class StartServer {
      * @param args
      */
     public static void main(String[] args) throws Exception {
+
         String url = "jdbc:mysql://localhost:3306/ChatRoomData";
         String user = "root";
         String passsword = "88888888";
         // 传入数据库信息，实例聊天室服务端
-        new ChatServer(url, user, passsword);
+        //new ChatServer(url, user, passsword);
+        new ServerGUI(url, user, passsword);
     }
 }

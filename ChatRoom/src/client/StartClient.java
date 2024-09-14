@@ -8,9 +8,10 @@ public class StartClient {
      * @param args
      */
     public static void main(String[] args) {
+        // ("192.168.139.199", 12345);
+        String serverAddress = "localhost";
+        int serverPort = 12345;
         // 实例客户端并为其构建UI
-        // new ChatClientGUI("192.168.139.133", 22345);
-        new ChatClientGUI("localhost", 12345);
-        //new ChatClientGUI("192.168.139.199", 12345);
+            new ClientGUI(serverAddress, serverPort);
     }
 }

@@ -21,7 +21,7 @@ public class ChatServer {
      * @param passsword 数据库密码
      */
     public ChatServer(String url, String user, String passsword) {
-        connectToDatabase(url, user, passsword);// 连接数据库
+        //connectToDatabase(url, user, passsword);// 连接数据库
         clientHandlers = new HashSet<>();
         buildConnection();// 等待客户端连接（会在等待连接中阻塞程序）
     }
@@ -50,16 +50,19 @@ public class ChatServer {
      * @param user      数据库用户
      * @param passsword 数据库密码
      */
-    private void connectToDatabase(String url, String user, String passsword) {
+    public boolean connectToDatabase(String url, String user, String passsword) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             dbConn = DriverManager.getConnection(url, user, passsword);
+            return true;// 成功连接
         } catch (ClassNotFoundException e) {
             System.out.println("数据库驱动加载异常");
             e.printStackTrace();
+            return false;
         } catch (SQLException e) {
             System.out.println("数据库连接异常");
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -129,4 +132,13 @@ public class ChatServer {
         }
         return false;// 用户名或密码不匹配
     }
+
+    public String printLog(String log) {
+        return log;
+    }
+
+    public String close(String log) {
+        return log;
+    }
+
 }
