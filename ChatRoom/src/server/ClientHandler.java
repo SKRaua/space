@@ -3,16 +3,18 @@ package server;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.sql.*;
 
 /**
- * 客户端处理器
+ * 客户端处理器，一个客户端对应一个线程
  */
-public class ClientHandler implements Runnable {
+public class clientHandler implements Runnable {
     private Socket socket;// 连接套接字
     private PrintWriter out;// 向客户端输出
     private BufferedReader in;// 从客户端输入
     private String username;// 用户名
-    private Set<ClientHandler> clientHandlers;// 客户端处理线程集合
+    private Set<clientHandler> clientHandlers;// 客户端处理线程集合
+    // private DBConnection dbConnection; // 数据库连接
 
     /**
      * 实例客户端处理器
@@ -20,7 +22,7 @@ public class ClientHandler implements Runnable {
      * @param socket         通信套接字
      * @param clientHandlers 在线客户端集合
      */
-    public ClientHandler(Socket socket, Set<ClientHandler> clientHandlers) {
+    public clientHandler(Socket socket, Set<clientHandler> clientHandlers) {
         this.socket = socket;
         this.clientHandlers = clientHandlers;
     }
@@ -52,7 +54,7 @@ public class ClientHandler implements Runnable {
                             clientListMessage();
                         }
                     } else {// 默认：发送信息并存入数据库
-                        broadcastMessage(username + ": " + message);
+                        broadcastMessage("[" + username + "]: " + message);
                     }
                 } else {// 用户未登陆
                     out.println("请先登陆！");
@@ -66,7 +68,7 @@ public class ClientHandler implements Runnable {
             try {
                 socket.close();
                 clientHandlers.remove(this);
-                broadcastMessage("[System]: " + username + " 离开聊天。");
+                broadcastMessage("[System]: [" + username + "] 离开聊天。");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -87,13 +89,20 @@ public class ClientHandler implements Runnable {
             String password2 = parts[3];
 
             if (password1.equals(password2)) {// 两次输入密码相同
-                // 调用服务器方法验证注册请求
-                if (ChatServer.registerCheck(username, password1)) {
-                    this.username = username;
-                    out.println("欢迎 " + username + "！");
-                    broadcastMessage("[System]: " + username + " 加入聊天");
-                } else {
-                    out.println("用户已存在或者注册异常");
+                // 调用数据库连接，验证注册请求
+                int result = ServerGUI.dbConnection.registerUser(username, password1);
+                switch (result) {
+                    case DBConnection.SUCCESSED:
+                        this.username = username;
+                        out.println("欢迎 " + username + "！");
+                        broadcastMessage("[System]: [" + username + "] 加入聊天");
+                        break;
+                    case DBConnection.FAILED:
+                        out.println("用户已存在");
+                        break;
+                    case DBConnection.EXCEPTION:
+                        out.println("注册异常");
+                        break;
                 }
             } else {
                 out.println("请保证两次输入密码一致");
@@ -112,13 +121,21 @@ public class ClientHandler implements Runnable {
         if (parts.length == 3) {
             String username = parts[1];
             String password = parts[2];
-            // 调用服务器方法验证登陆请求
-            if (ChatServer.loginCheck(username, password)) {
-                this.username = username;
-                out.println("欢迎 " + username + "！");
-                broadcastMessage("[System]: " + username + " 加入聊天");
-            } else {
-                out.println("用户名或密码错误，请重试");
+
+            // 调用数据库连接验证登陆请求
+            int result = ServerGUI.dbConnection.loginUser(username, password);
+            switch (result) {
+                case DBConnection.SUCCESSED:
+                    this.username = username;
+                    out.println("欢迎 " + username + "！");
+                    broadcastMessage("[System]: [" + username + "] 加入聊天");
+                    break;
+                case DBConnection.FAILED:
+                    out.println("用户不存在");
+                    break;
+                case DBConnection.EXCEPTION:
+                    out.println("登录异常");
+                    break;
             }
         }
     }
@@ -130,8 +147,9 @@ public class ClientHandler implements Runnable {
      * @throws IOException
      */
     private void broadcastMessage(String message) throws IOException {
+        Logger.log(message); // 记录消息到日志区域
         // 遍历客户端处理线程集合发送信息
-        for (ClientHandler clientHandler : clientHandlers) {
+        for (clientHandler clientHandler : clientHandlers) {
             clientHandler.out.println(message);
         }
     }
@@ -148,15 +166,24 @@ public class ClientHandler implements Runnable {
             String targetUsername = parts[1];
             String privateMessage = parts[2];
             // 查找发送对象
-            for (ClientHandler clientHandler : clientHandlers) {
+            for (clientHandler clientHandler : clientHandlers) {
                 if (clientHandler.username.equals(targetUsername)) {
                     // 发送私聊信息
-                    clientHandler.out.println("[Private] " + username + ": " + privateMessage);
-                    this.out.println("[Private] to " + targetUsername + ": " + privateMessage);
+                    clientHandler.out.println("[Private] [" + username + "]: " + privateMessage);
+                    this.out.println("[Private] to [" + targetUsername + "]: " + privateMessage);
+                    Logger.log("[" + username + "] private to [" + targetUsername + "]: privateMessage"); // 记录消息到日志区域
                     return;
                 }
             }
             this.out.println("未找到用户 " + targetUsername);
+        }
+    }
+
+    public String getUsername() throws IOException {
+        if (this.username != null) {
+            return this.username;
+        } else {
+            return null;
         }
     }
 
@@ -165,7 +192,7 @@ public class ClientHandler implements Runnable {
      */
     private void clientListMessage() throws IOException {
         this.out.println(clientHandlers.size() + "在线用户：");
-        for (ClientHandler clientHandler : clientHandlers) {
+        for (clientHandler clientHandler : clientHandlers) {
             this.out.print("[" + clientHandler.username + "] ");
         }
     }

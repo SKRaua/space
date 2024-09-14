@@ -28,7 +28,7 @@ public class ExceptionGUI extends JFrame {
         this.getContentPane().add(eButton, BorderLayout.SOUTH);
 
         this.pack();// 窗口自适应大小
-        this.setSize(200, 100);
+        this.setSize(280, 160);
         this.setLocationRelativeTo(null);// 设置位置（到屏幕中间）
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);

@@ -4,6 +4,7 @@
     ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "/Users/zhouxinyang/Desktop/space/space/mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar"
+        "/Users/zhouxinyang/Desktop/space/space/mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar",
+        "d:\\space\\mysql-connector-j-9.0.0\\mysql-connector-j-9.0.0.jar"
     ]
 }
