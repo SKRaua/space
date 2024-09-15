@@ -9,7 +9,7 @@ public class Logger {
         Logger.logArea = logArea;
     }
 
-    public static synchronized void log(String message) {
+    public static synchronized void log(String message) {// 同步机制来输出日志到服务器终端窗口
         if (logArea != null) {
             SwingUtilities.invokeLater(() -> logArea.append(message + "\n"));
         }

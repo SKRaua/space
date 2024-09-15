@@ -1,12 +1,12 @@
 package server;
 
 import javax.swing.*;
+
+import com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping;
+
 import java.util.*;
 
 public class ServerGUI extends JFrame {
-    private WaitLink linkWaiter; // 网络服务端，处理客户端连接
-    protected static DBConnection dbConnection; // 数据库连接
-
     // UI组件
     private JTextField urlField;
     private JTextField userField;
@@ -20,14 +20,14 @@ public class ServerGUI extends JFrame {
     private JButton executeSqlButton;
     private JButton executeCommandButton;
 
-    public ServerGUI(String url, String user, String password) {
+    public ServerGUI(String[] dbConfig) {
         super("SKRaua聊天室服务终端");
-        ServerGUI.dbConnection = DBConnection.getInstance(url, user, password);
-        buildGUI(url, user, password);
-        this.linkWaiter = new WaitLink(); // 实例化 ChatServer
+        // ServerGUI.dbConnection = DBConnection.getInstance(url, user, password);
+        buildGUI(dbConfig);
+        // this.linkWaiter = new linkWaiter(); // 实例化 ChatServer
     }
 
-    private void buildGUI(String url, String user, String password) {
+    private void buildGUI(String[] dbConfig) {
         // 初始化UI组件
         logArea = new JTextArea();
         logArea.setEditable(false);
@@ -36,9 +36,9 @@ public class ServerGUI extends JFrame {
         JScrollPane logScrollPane = new JScrollPane(logArea);
         Logger.setLogArea(logArea);// 处理日志记录
 
-        urlField = new JTextField(url);
-        userField = new JTextField(user);
-        passwordField = new JPasswordField(password);
+        urlField = new JTextField(dbConfig[0]);
+        userField = new JTextField(dbConfig[1]);
+        passwordField = new JPasswordField(dbConfig[2]);
         terminalField = new JTextField();
         sqlField = new JTextField("SELECT * FROM users");
 
@@ -112,8 +112,9 @@ public class ServerGUI extends JFrame {
         String urlLink = urlField.getText();
         String userLink = userField.getText();
         String passwordLink = new String(passwordField.getPassword());
-        ServerGUI.dbConnection = DBConnection.getInstance(urlLink, userLink, passwordLink);
-        if (dbConnection.testConnection()) {
+        String[] dbConfig = { urlLink, userLink, passwordLink };
+        ChatServer.dbOperations = new DBOperations(dbConfig);
+        if (ChatServer.dbOperations.testConnection()) {
             logArea.append("数据库重连成功\n");
         } else {
             logArea.append("数据库重连失败\n");
@@ -121,7 +122,7 @@ public class ServerGUI extends JFrame {
     }
 
     private void testConnection() {
-        boolean isConnected = dbConnection.testConnection();
+        boolean isConnected = ChatServer.dbOperations.testConnection();
         if (isConnected) {
             logArea.append("数据库连接测试成功\n");
         } else {
@@ -133,14 +134,14 @@ public class ServerGUI extends JFrame {
         String sql = sqlField.getText();
         if (!sql.isEmpty()) {
             if (sql.trim().toLowerCase().startsWith("select")) {
-                java.util.List<Map<String, Object>> result = dbConnection.executeQuery(sql);
+                java.util.List<Map<String, Object>> result = ChatServer.dbOperations.executeQuery(sql);
                 logArea.append("SQL 查询结果: \n");
                 for (Map<String, Object> row : result) {
                     logArea.append(row.toString() + "\n");
                 }
             } else {
-                int rowsAffected = dbConnection.executeUpdate(sql);
-                logArea.append("SQL 执行成功，影响行数: " + rowsAffected + "\n");
+                int rowsAffected = ChatServer.dbOperations.executeUpdate(sql);
+                logArea.append(" 执行SQL 影响行数: " + rowsAffected + "\n");
             }
         } else {
             logArea.append("SQL 不能为空\n");

@@ -6,7 +6,7 @@ import java.net.*;
 /**
  * 聊天室客户端
  */
-public class ChatClient {
+public class ClientIO {
     private Socket socket;// 连接套接字
     private BufferedReader in;// 从服务端读取
     private PrintWriter out;// 向服务端发出
@@ -18,7 +18,7 @@ public class ChatClient {
      * @param serverPort    端口
      * @throws IOException
      */
-    public ChatClient(String serverAddress, int serverPort) throws IOException {
+    public ClientIO(String serverAddress, int serverPort) throws IOException {
         this.socket = new Socket(serverAddress, serverPort);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
