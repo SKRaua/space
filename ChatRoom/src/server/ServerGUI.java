@@ -113,8 +113,8 @@ public class ServerGUI extends JFrame {
         String userLink = userField.getText();
         String passwordLink = new String(passwordField.getPassword());
         String[] dbConfig = { urlLink, userLink, passwordLink };
-        ChatServer.dbOperations = new DBOperations(dbConfig);
-        if (ChatServer.dbOperations.testConnection()) {
+        boolean isConnected = ChatServer.getDbOperations().reconnectDatabase(dbConfig);
+        if (isConnected) {
             logArea.append("数据库重连成功\n");
         } else {
             logArea.append("数据库重连失败\n");
@@ -122,7 +122,7 @@ public class ServerGUI extends JFrame {
     }
 
     private void testConnection() {
-        boolean isConnected = ChatServer.dbOperations.testConnection();
+        boolean isConnected = ChatServer.getDbOperations().testConnection();
         if (isConnected) {
             logArea.append("数据库连接测试成功\n");
         } else {
@@ -134,13 +134,13 @@ public class ServerGUI extends JFrame {
         String sql = sqlField.getText();
         if (!sql.isEmpty()) {
             if (sql.trim().toLowerCase().startsWith("select")) {
-                java.util.List<Map<String, Object>> result = ChatServer.dbOperations.executeQuery(sql);
+                java.util.List<Map<String, Object>> result = ChatServer.getDbOperations().executeQuery(sql);
                 logArea.append("SQL 查询结果: \n");
                 for (Map<String, Object> row : result) {
                     logArea.append(row.toString() + "\n");
                 }
             } else {
-                int rowsAffected = ChatServer.dbOperations.executeUpdate(sql);
+                int rowsAffected = ChatServer.getDbOperations().executeUpdate(sql);
                 logArea.append(" 执行SQL 影响行数: " + rowsAffected + "\n");
             }
         } else {

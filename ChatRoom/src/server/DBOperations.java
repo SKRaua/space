@@ -90,6 +90,11 @@ public class DBOperations {
         }
     }
 
+    public boolean reconnectDatabase(String[] dbConfig) {
+        this.connectionManager = new DBConnManager(dbConfig);
+        return testConnection();
+    }
+
     public boolean testConnection() {
         String testQuery = "SELECT 1";
         try (Connection conn = getConnection();

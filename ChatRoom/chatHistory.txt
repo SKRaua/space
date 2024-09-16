@@ -1,0 +1,8 @@
+#世界频道
+[/register <用户名> <密码> <确认密码>] 来注册
+[/login <用户名> <密码>] 来登陆
+[/private <用户名> <消息>] 发送私密信息
+[/createGroup <群聊名称>] 创建群聊
+[/joinGroup <群聊名称>] 加入群聊
+[/leaveGroup <群聊名称>] 离开群聊
+[/clientList] 获取用户列表

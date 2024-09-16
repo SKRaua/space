@@ -64,7 +64,7 @@ public class ServerIO implements Runnable {
                             sendClientList();
                         }
                     } else { // 默认：发送信息到群聊或公共频道
-                        ChatServer.clientManager.broadcastMessageToAll("[" + username + "]: " + message);
+                        ChatServer.getClientManager().broadcastMessageToAll("[" + username + "]: " + message);
                     }
                 } else { // 用户未登陆
                     out.println("请先登陆！");
@@ -75,8 +75,8 @@ public class ServerIO implements Runnable {
         } finally {
             try {
                 socket.close();
-                ChatServer.clientManager.removeClient(this);
-                ChatServer.clientManager.broadcastMessageToAll("[System]: [" + username + "] 离开聊天。");
+                ChatServer.getClientManager().removeClient(this);
+                ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 离开聊天。");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -108,12 +108,12 @@ public class ServerIO implements Runnable {
 
             if (password1.equals(password2)) { // 两次输入密码相同
                 // 调用数据库连接，验证注册请求
-                int result = ChatServer.dbOperations.registerUser(username, password1);
+                int result = ChatServer.getDbOperations().registerUser(username, password1);
                 switch (result) {
                     case 1:
                         this.username = username;
                         out.println("欢迎 " + username + "！");
-                        ChatServer.clientManager.broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
+                        ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
                         break;
                     case 0:
                         out.println("用户已存在");
@@ -141,12 +141,12 @@ public class ServerIO implements Runnable {
             String password = parts[2];
 
             // 调用数据库连接验证登录请求
-            int result = ChatServer.dbOperations.loginUser(username, password);
+            int result = ChatServer.getDbOperations().loginUser(username, password);
             switch (result) {
                 case 1:
                     this.username = username;
                     out.println("欢迎 " + username + "！");
-                    ChatServer.clientManager.broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
+                    ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
                     break;
                 case 0:
                     out.println("用户不存在");
@@ -169,7 +169,7 @@ public class ServerIO implements Runnable {
         if (parts.length == 3) {
             String targetUsername = parts[1];
             String privateMessage = parts[2];
-            ServerIO targetClient = ChatServer.clientManager.findClient(targetUsername);
+            ServerIO targetClient = ChatServer.getClientManager().findClient(targetUsername);
             if (targetClient != null) {
                 targetClient.sendMessage("[Private] [" + username + "]: " + privateMessage);
                 this.sendMessage("[Private] to [" + targetUsername + "]: " + privateMessage);
@@ -190,7 +190,7 @@ public class ServerIO implements Runnable {
         if (parts.length == 3) {
             String groupName = parts[1];
             String groupMessage = parts[2];
-            ChatServer.clientManager.broadcastMessage(groupName,
+            ChatServer.getClientManager().broadcastMessage(groupName,
                     "/group " + groupName + " [" + username + "]: " + groupMessage);
         }
     }
@@ -205,7 +205,7 @@ public class ServerIO implements Runnable {
         String[] parts = message.split(" ", 2);
         if (parts.length == 2) {
             String groupName = parts[1];
-            if (ChatServer.clientManager.createGroupChat(groupName, this)) {
+            if (ChatServer.getClientManager().createGroupChat(groupName, this)) {
                 sendMessage("/group " + groupName + " 群聊 " + groupName + " 创建成功");
             } else {
                 sendMessage("群聊 " + groupName + " 已存在");
@@ -224,8 +224,8 @@ public class ServerIO implements Runnable {
         String[] parts = message.split(" ", 2);
         if (parts.length == 2) {
             String groupName = parts[1];
-            ChatServer.clientManager.addMemberToGroup(groupName, this);
-            ChatServer.clientManager.broadcastMessage(groupName,
+            ChatServer.getClientManager().addMemberToGroup(groupName, this);
+            ChatServer.getClientManager().broadcastMessage(groupName,
                     "/group " + groupName + " " + username + " 成功加入 " + groupName);
         }
     }
@@ -240,7 +240,7 @@ public class ServerIO implements Runnable {
         String[] parts = message.split(" ", 2);
         if (parts.length == 2) {
             String groupName = parts[1];
-            ChatServer.clientManager.removeMemberFromGroup(groupName, this);
+            ChatServer.getClientManager().removeMemberFromGroup(groupName, this);
         }
     }
 
@@ -250,7 +250,7 @@ public class ServerIO implements Runnable {
      * @throws IOException
      */
     private void sendClientList() throws IOException {
-        Set<String> clientList = ChatServer.clientManager.getClientList();
+        Set<String> clientList = ChatServer.getClientManager().getClientList();
         this.sendMessage("在线用户： " + String.join(", ", clientList));
     }
 
