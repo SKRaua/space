@@ -1,6 +1,9 @@
 package client;
 
 import javax.swing.*;
+
+import message.MessageIO;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -79,7 +82,7 @@ public class SelectServerGUI extends JFrame {
 
             // 尝试连接服务器
             try {
-                ChatClient.setClientIO(new ClientIO(serverAddress, serverPort));
+                ChatClient.setClientIO(new MessageIO(serverAddress, serverPort));
                 // ChatClient.clientIO = new ClientIO(serverAddress, serverPort);
                 statusLabel.setText("连接成功！");
                 // 如果连接成功，跳转到主界面

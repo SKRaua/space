@@ -34,7 +34,7 @@ public class ChatServer {
         while (true) {
             try {
                 Socket socket = serverSocket.accept();
-                ServerIO clientHandler = new ServerIO(socket);// , clientManager
+                ClientHandler clientHandler = new ClientHandler(socket);// , clientManager
                 new Thread(clientHandler).start();
                 clientManager.addClient(clientHandler);
             } catch (IOException e) {
