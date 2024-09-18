@@ -21,7 +21,9 @@ public class ChatServer {
             this.serverSocket = new ServerSocket(port);// 实例服务器套接字对象
             testConnection();
             Logger.log("聊天室服务端在端口 " + port + " 上运行中。。。");
-            startServer();// 等待客户端连接（阻塞程序）
+            Logger.log("执行终端指令: /help 查看帮助\n");
+
+            startServer();// 启动线程等待客户端连接
         } catch (IOException e) {
             Logger.log("服务器异常");
             e.printStackTrace();
@@ -32,17 +34,20 @@ public class ChatServer {
      * 启动服务器
      */
     private void startServer() {
-        while (true) {
-            try {
-                Socket socket = serverSocket.accept();
-                ServerIO clientHandler = new ServerIO(socket);// , clientManager
-                new Thread(clientHandler).start();
-                clientManager.addClient(clientHandler);
-            } catch (IOException e) {
-                Logger.log("与客户端连接异常");
-                e.printStackTrace();
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Socket socket = serverSocket.accept();
+                    ClientHandler clientHandler = new ClientHandler(socket);// , clientManager
+                    Thread handlerThread = new Thread(clientHandler);
+                    handlerThread.start();
+                    clientManager.addClient(clientHandler, handlerThread);
+                } catch (IOException e) {
+                    Logger.log("与客户端连接异常");
+                    e.printStackTrace();
+                }
             }
-        }
+        }).start();
     }
 
     /**

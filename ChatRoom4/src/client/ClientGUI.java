@@ -10,7 +10,6 @@ public class ClientGUI extends JFrame {
     private JButton sendButton;
     private JList<String> chatList; // 聊天选择列表
     private DefaultListModel<String> chatListModel;
-    // private ChatHistoryManager chatHistoryManager; // 聊天记录管理器
 
     private String currentChat; // 当前选择的聊天
 
@@ -98,7 +97,6 @@ public class ClientGUI extends JFrame {
                 ChatClient.getClientIO().sendMessage("/chat " + currentChat + " " + message);
             }
             inputField.setText("");
-            // chatHistoryManager.appendMessage(currentChat, "我: " + message); // 保存到聊天记录
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -122,6 +120,13 @@ public class ClientGUI extends JFrame {
                             if (chatName.equals(currentChat)) {
                                 chatArea.append(chatMessage + "\n"); // 只更新当前聊天窗口的内容
                             }
+                        }
+                    } else if (message.startsWith("/login")) {
+                        String[] parts = message.split(" ", 2);
+                        if (parts.length == 2) {
+                            String username = parts[1];
+                            ChatClient.setUsername(username);
+                           ChatClient.getChatHistoryManager().loadChatHistory(ChatClient.getUsername());
                         }
                     } else {
                         ChatClient.getChatHistoryManager().appendMessage("世界频道", message); // 保存公共频道记录

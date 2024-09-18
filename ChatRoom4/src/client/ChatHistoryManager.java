@@ -5,12 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChatHistoryManager {
-    private static final String FILE_PATH = "chatHistory.txt";
+    private static final String FILE_PATH_SUFFIX = "chatHistory.txt";
     private Map<String, StringBuilder> chatHistoryMap;
 
     public ChatHistoryManager() {
         chatHistoryMap = new HashMap<>();
-        loadChatHistory(); // 实例化时加载本地文件中的聊天记录
     }
 
     /**
@@ -21,7 +20,7 @@ public class ChatHistoryManager {
             chatHistoryMap.put(chatName, new StringBuilder());
         }
         chatHistoryMap.get(chatName).append(message).append("\n");
-        saveChatHistory(); // 每次添加消息后保存到本地文件
+        saveChatHistory(ChatClient.getUsername()); // 每次添加消息后保存到本地文件
     }
 
     /**
@@ -36,7 +35,7 @@ public class ChatHistoryManager {
      */
     public void deleteChatHistory(String chatName) {
         chatHistoryMap.remove(chatName);
-        saveChatHistory(); // 删除后保存到本地文件
+        saveChatHistory(ChatClient.getUsername()); // 删除后保存到本地文件
     }
 
     /**
@@ -49,8 +48,8 @@ public class ChatHistoryManager {
     /**
      * 加载本地文件中的聊天记录
      */
-    private void loadChatHistory() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+    public void loadChatHistory(String usrname) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(usrname + "_" + FILE_PATH_SUFFIX))) {
             String line;
             String currentChat = null;
             while ((line = reader.readLine()) != null) {
@@ -69,8 +68,8 @@ public class ChatHistoryManager {
     /**
      * 将聊天记录保存到本地文件
      */
-    private void saveChatHistory() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+    private void saveChatHistory(String usrname) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(usrname + "_" + FILE_PATH_SUFFIX))) {
             for (Map.Entry<String, StringBuilder> entry : chatHistoryMap.entrySet()) {
                 writer.write("#" + entry.getKey() + "\n"); // 用 # 标记聊天对象
                 writer.write(entry.getValue().toString());

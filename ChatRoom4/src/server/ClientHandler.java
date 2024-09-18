@@ -2,17 +2,17 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
 import java.util.Set;
 
 /**
  * 客户端处理器，一个客户端对应一个线程
  */
-public class ServerIO implements Runnable {
+public class ClientHandler implements Runnable {
     private Socket socket; // 连接套接字
     private PrintWriter out; // 向客户端输出
     private BufferedReader in; // 从客户端输入
     private String username; // 用户名
-    // private ClientManager clientManager; // 客户端管理器
 
     /**
      * 实例客户端处理器
@@ -20,11 +20,10 @@ public class ServerIO implements Runnable {
      * @param socket        通信套接字
      * @param clientManager 客户端管理器
      */
-    public ServerIO(Socket socket) throws IOException {// , ClientManager clientManager
+    public ClientHandler(Socket socket) throws IOException {
         this.socket = socket;
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
-        // this.clientManager = clientManager;
     }
 
     /**
@@ -73,13 +72,7 @@ public class ServerIO implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                socket.close();
-                ChatServer.getClientManager().removeClient(this);
-                ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 离开聊天。");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            closeConnection();
         }
     }
 
@@ -107,24 +100,33 @@ public class ServerIO implements Runnable {
             String password2 = parts[3];
 
             if (password1.equals(password2)) { // 两次输入密码相同
-                // 调用数据库连接，验证注册请求
-                int result = ChatServer.getDbOperations().registerUser(username, password1);
-                switch (result) {
-                    case 1:
-                        this.username = username;
-                        out.println("欢迎 " + username + "！");
-                        ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
-                        break;
-                    case 0:
-                        out.println("用户已存在");
-                        break;
-                    case -1:
-                        out.println("注册异常");
-                        break;
+                try { // 调用数据库连接，验证注册请求
+                    int result;
+                    result = ChatServer.getDbOperations().registerUser(username, password1);
+                    switch (result) {
+                        case 1:
+                            this.username = username;
+                            ChatServer.getClientManager().loadChat(this);// 同步聊天窗口
+                            Logger.log("[System]: [" + username + "] 加入聊天");
+                            out.println("欢迎 " + username + "！");
+                            ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
+                            break;
+                        case 0:
+                            out.println("用户已存在");
+                            break;
+                        default:
+                            out.println("注册异常");
+                            break;
+                    }
+                } catch (SQLException e) {
+                    out.println("注册异常");
+                    e.printStackTrace();
                 }
             } else {
                 out.println("请保证两次输入密码一致");
             }
+        } else {
+            out.println("格式错误");
         }
     }
 
@@ -140,21 +142,33 @@ public class ServerIO implements Runnable {
             String username = parts[1];
             String password = parts[2];
 
-            // 调用数据库连接验证登录请求
-            int result = ChatServer.getDbOperations().loginUser(username, password);
-            switch (result) {
-                case 1:
-                    this.username = username;
-                    out.println("欢迎 " + username + "！");
-                    ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
-                    break;
-                case 0:
-                    out.println("用户不存在");
-                    break;
-                case -1:
-                    out.println("登录异常");
-                    break;
+            try { // 调用数据库连接验证登录请求
+                int result;
+
+                result = ChatServer.getDbOperations().loginUser(username, password);
+
+                switch (result) {
+                    case 1:
+                        this.username = username;
+                        out.println("/login " + username);
+                        ChatServer.getClientManager().loadChat(this);// 同步聊天窗口
+                        Logger.log("[System]: [" + username + "] 加入聊天");
+                        out.println("欢迎 " + username + "！");
+                        ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
+                        break;
+                    case 0:
+                        out.println("用户不存在");
+                        break;
+                    default:
+                        out.println("登录异常");
+                        break;
+                }
+            } catch (SQLException e) {
+                out.println("登录异常");
+                e.printStackTrace();
             }
+        } else {
+            out.println("格式错误");
         }
     }
 
@@ -169,7 +183,7 @@ public class ServerIO implements Runnable {
         if (parts.length == 3) {
             String targetUsername = parts[1];
             String privateMessage = parts[2];
-            ServerIO targetClient = ChatServer.getClientManager().findClient(targetUsername);
+            ClientHandler targetClient = ChatServer.getClientManager().findClient(targetUsername);
             if (targetClient != null) {
                 targetClient.sendMessage("[Private] [" + username + "]: " + privateMessage);
                 this.sendMessage("[Private] to [" + targetUsername + "]: " + privateMessage);
@@ -270,6 +284,31 @@ public class ServerIO implements Runnable {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * 关闭客户端连接并清理资源
+     */
+    public void closeConnection() {
+        try {
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 广播用户离开消息
+            if (username != null) {
+                Logger.log("[System]: [" + username + "] 离开聊天");
+                ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 离开聊天。");
+            }
+        }
     }
 
 }

@@ -17,44 +17,115 @@ public class DBOperations {
 
     public ResultSet findUser(String username) throws SQLException {
         try (Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE username = ?")) {
+                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users WHERE user_name = ?")) {
             pstmt.setString(1, username);
             return pstmt.executeQuery();
         }
     }
 
-    public int registerUser(String username, String password) {
+    public int registerUser(String username, String password) throws SQLException {
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn
-                        .prepareStatement("INSERT INTO users (username, userPassword) VALUES (?, ?)")) {
+                        .prepareStatement("INSERT INTO users (user_name, user_password) VALUES (?, ?)")) {
             pstmt.setString(1, username);
             pstmt.setString(2, password);
             return pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
         }
     }
 
-    public int loginUser(String username, String password) {
+    public int loginUser(String username, String password) throws SQLException {
         try (Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement("SELECT userPassword FROM users WHERE username = ?")) {
+                PreparedStatement pstmt = conn
+                        .prepareStatement("SELECT user_password FROM users WHERE user_name = ?")) {
             pstmt.setString(1, username);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    String storedPassword = rs.getString("userPassword");
+                    String storedPassword = rs.getString("user_password");
                     return storedPassword.equals(password) ? 1 : 0;
                 } else {
                     return -1; // 用户名不存在
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
         }
     }
 
-    public List<Map<String, Object>> executeQuery(String sql) {
+    public boolean createChat(String creator, String chatName) throws SQLException {
+        try (Connection conn = getConnection();
+                PreparedStatement pstmt = conn
+                        .prepareStatement("INSERT INTO chats (chat_creator, chat_name) VALUES (?, ?)")) {
+            pstmt.setString(1, creator);
+            pstmt.setString(2, chatName);
+            pstmt.executeUpdate();
+            if (addMemberToChat(creator, chatName)) {
+                return true;
+            } else {
+                deleteChat(chatName);
+                return false;
+            }
+        }
+    }
+
+    public boolean deleteChat(String chatName) throws SQLException {
+        try (Connection conn = getConnection();
+                PreparedStatement deleteChatStmt = conn.prepareStatement("DELETE FROM chats WHERE chat_name = ?")) {
+
+            // 删除 chats 表中的群聊，群聊用户关系表需要加ON DELETE CASCADE
+            deleteChatStmt.setString(1, chatName);
+            return deleteChatStmt.executeUpdate() > 0;
+
+        }
+    }
+
+    public boolean addMemberToChat(String username, String chatName) throws SQLException {
+        try (Connection conn = getConnection();
+                PreparedStatement pstmt = conn
+                        .prepareStatement("INSERT INTO uesr_chat_map (user_name, chat_name) VALUES (?, ?)")) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, chatName);
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
+    public boolean removeMemberFromChat(String username, String chatName) throws SQLException {
+        try (Connection conn = getConnection();
+                PreparedStatement pstmt = conn
+                        .prepareStatement("DELETE FROM user_chat_map WHERE user_name = ? AND chat_name = ?")) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, chatName);
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
+    public List<String> getUserChats(String username) throws SQLException {
+        List<String> chatList = new ArrayList<>();
+        String sql = "SELECT chat_name FROM user_chat_map WHERE user_name = ?";
+        try (Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    chatList.add(rs.getString("chat_name"));
+                }
+            }
+        }
+        return chatList;
+    }
+
+    // public Map<String, Set<String>> removeMemberFromChat(String username, String
+    // chatName) {
+    // try (Connection conn = getConnection();
+    // PreparedStatement pstmt = conn
+    // .prepareStatement("")) {
+    // pstmt.setString(1, username);
+    // pstmt.setString(2, chatName);
+    // return pstmt.executeUpdate() > 0;
+    // } catch (SQLException e) {
+    // e.printStackTrace();
+    // return false;
+    // }
+    // }
+
+    public List<Map<String, Object>> executeQuery(String sql) throws SQLException {
         List<Map<String, Object>> resultList = new ArrayList<>();
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -71,22 +142,14 @@ public class DBOperations {
                 }
                 resultList.add(row);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Map<String, Object> row = new HashMap<>();
-            row.put("查询异常 ", sql);
-            resultList.add(row);
         }
         return resultList;
     }
 
-    public int executeUpdate(String sql) {
+    public int executeUpdate(String sql) throws SQLException {
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
             return pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
         }
     }
 

@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class SelectServerGUI extends JFrame {
 
@@ -12,7 +11,7 @@ public class SelectServerGUI extends JFrame {
     private JTextField portField;
     private JLabel statusLabel;
 
-    public SelectServerGUI() {
+    public SelectServerGUI(String serverAddress, String serverPort) {
         super("去哪聊~~");
 
         // 设置窗口大小、布局方式和关闭操作
@@ -26,13 +25,13 @@ public class SelectServerGUI extends JFrame {
         JLabel addressLabel = new JLabel("服务器地址: ");
         addressLabel.setBounds(50, 30, 80, 30);
 
-        addressField = new JTextField(15);
+        addressField = new JTextField(serverAddress, 15);
         addressField.setBounds(140, 30, 200, 30);
 
         JLabel portLabel = new JLabel("端口: ");
         portLabel.setBounds(50, 70, 80, 30);
 
-        portField = new JTextField(5);
+        portField = new JTextField(serverPort, 5);
         portField.setBounds(140, 70, 200, 30);
 
         JButton connectButton = new JButton("连接");
@@ -78,14 +77,12 @@ public class SelectServerGUI extends JFrame {
             }
 
             // 尝试连接服务器
-            try {
-                ChatClient.setClientIO(new ClientIO(serverAddress, serverPort));
-                // ChatClient.clientIO = new ClientIO(serverAddress, serverPort);
+            if (ChatClient.connectTo(serverAddress, serverPort)) {
                 statusLabel.setText("连接成功！");
                 // 如果连接成功，跳转到主界面
                 new ClientGUI();
                 dispose(); // 关闭当前窗口
-            } catch (IOException ex) {
+            } else {
                 statusLabel.setText("连接失败，请检查地址和端口！");
             }
         }

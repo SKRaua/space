@@ -1,0 +1,58 @@
+#世界频道
+[/register <用户名> <密码> <确认密码>] 来注册
+[/login <用户名> <密码>] 来登陆
+[/private <用户名> <消息>] 发送私密信息
+[/createChat <聊天名称>] 创建聊天
+[/joinChat <聊天名称>] 加入聊天
+[/leaveChat <聊天名称>] 离开聊天
+[/clientList] 获取用户列表
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+[System]: [ltgh] 加入聊天
+[SKRaua]: fafdsfa
+[SKRaua]: fsdfsafasdfsadf
+[SKRaua]: fafasdfsadfasdf
+[SKRaua]: fasfasdfsadf
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+[System]: [ltgh] 加入聊天
+[System]: [ltgh] 离开聊天。
+[System]: [null] 离开聊天。
+/group LTGH 欢迎回来
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+[System]: [ltgh] 离开聊天。
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+[System]: [SKRaua] 离开聊天。
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+[SKRaua]: dasda
+[SKRaua]: dasdas
+欢迎 SKRaua！
+[System]: [SKRaua] 加入聊天
+#LTGH
+欢迎回来
+[SKRaua]: fdsfsdafasfsda
+[SKRaua]: fsdfsdafsdaf
+[SKRaua]: fsafsdafasd
+欢迎回来
+欢迎回来
+欢迎回来
+欢迎回来
+欢迎回来
+欢迎回来
+[SKRaua]: dadas
+#newChat
+SKRaua 成功加入 newChat
+[SKRaua]: fasfdasf
+[SKRaua]: fasfasdf
+[SKRaua]: rwerwqer

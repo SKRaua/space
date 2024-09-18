@@ -1,0 +1,8 @@
+#世界频道
+[/register <用户名> <密码> <确认密码>] 来注册
+[/login <用户名> <密码>] 来登陆
+[/private <用户名> <消息>] 发送私密信息
+[/createChat <聊天名称>] 创建聊天
+[/joinChat <聊天名称>] 加入聊天
+[/leaveChat <聊天名称>] 离开聊天
+[/clientList] 获取用户列表
