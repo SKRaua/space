@@ -7,11 +7,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClientManager {
-    private Map<String, Set<ServerIO>> groupHandlers; // 存储群聊及其成员
+    private Map<String, Set<ServerIO>> chatHandlers; // 存储群聊及其成员
     private Set<ServerIO> allHandlers; // 存储所有在线客户端
 
     public ClientManager() {
-        this.groupHandlers = new ConcurrentHashMap<>();// 线程安全集合
+        this.chatHandlers = new ConcurrentHashMap<>();// 线程安全集合
         this.allHandlers = ConcurrentHashMap.newKeySet();
     }
 
@@ -64,20 +64,21 @@ public class ClientManager {
     /**
      * 创建群聊
      *
-     * @param groupName 群聊名称
-     * @param creator   群聊创建者
+     * @param chatName 群聊名称
+     * @param creator  群聊创建者
      * @throws IOException
      */
-    public boolean createGroupChat(String groupName, ServerIO creator) throws IOException {
-        if (!groupHandlers.containsKey(groupName)) {
+    public boolean createChat(String chatName, ServerIO creator) throws IOException {
+        if (!chatHandlers.containsKey(chatName)) {
             Set<ServerIO> members = new HashSet<>();
             members.add(creator);
-            groupHandlers.put(groupName, members);
-            // creator.sendMessage("群聊 " + groupName + " 创建成功");
-            broadcastMessage(groupName, "[System]: [" + creator.getUsername() + "] 创建了群聊 " + groupName);
+            chatHandlers.put(chatName, members);
+            // creator.sendMessage("群聊 " + chatName + " 创建成功");
+            // broadcastMessage(chatName, "[System]: [" + creator.getUsername() + "] 创建了群聊
+            // " + chatName);
             return true;
         } else {
-            // creator.sendMessage("群聊 " + groupName + " 已存在");
+            // creator.sendMessage("群聊 " + chatName + " 已存在");
             return false;
         }
     }
@@ -85,11 +86,11 @@ public class ClientManager {
     /**
      * 广播消息到群聊成员
      *
-     * @param groupName 群聊名称
-     * @param message   消息内容
+     * @param chatName 群聊名称
+     * @param message  消息内容
      */
-    public void broadcastMessage(String groupName, String message) {
-        Set<ServerIO> members = groupHandlers.get(groupName);
+    public void broadcastMessage(String chatName, String message) {
+        Set<ServerIO> members = chatHandlers.get(chatName);
         if (members != null) {
             for (ServerIO member : members) {
                 try {
@@ -119,11 +120,11 @@ public class ClientManager {
     /**
      * 添加成员到群聊
      *
-     * @param groupName 群聊名称
-     * @param member    成员
+     * @param chatName 群聊名称
+     * @param member   成员
      */
-    public void addMemberToGroup(String groupName, ServerIO member) {
-        Set<ServerIO> members = groupHandlers.get(groupName);
+    public void addMemberToChat(String chatName, ServerIO member) {
+        Set<ServerIO> members = chatHandlers.get(chatName);
         if (members != null) {
             members.add(member);
         }
@@ -132,11 +133,11 @@ public class ClientManager {
     /**
      * 移除成员从群聊
      *
-     * @param groupName 群聊名称
-     * @param member    成员
+     * @param chatName 群聊名称
+     * @param member   成员
      */
-    public void removeMemberFromGroup(String groupName, ServerIO member) {
-        Set<ServerIO> members = groupHandlers.get(groupName);
+    public void removeMemberFromChat(String chatName, ServerIO member) {
+        Set<ServerIO> members = chatHandlers.get(chatName);
         if (members != null) {
             members.remove(member);
         }

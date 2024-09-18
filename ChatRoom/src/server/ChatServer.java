@@ -31,17 +31,19 @@ public class ChatServer {
      * 启动服务器
      */
     private void startServer() {
-        while (true) {
-            try {
-                Socket socket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(socket);// , clientManager
-                new Thread(clientHandler).start();
-                clientManager.addClient(clientHandler);
-            } catch (IOException e) {
-                Logger.log("与客户端连接异常");
-                e.printStackTrace();
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Socket socket = serverSocket.accept();
+                    ClientHandler clientHandler = new ClientHandler(socket);// , clientManager
+                    new Thread(clientHandler).start();
+                    clientManager.addClient(clientHandler);
+                } catch (IOException e) {
+                    Logger.log("与客户端连接异常");
+                    e.printStackTrace();
+                }
             }
-        }
+        }).start();
     }
 
     /**

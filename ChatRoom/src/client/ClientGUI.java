@@ -1,9 +1,11 @@
 package client;
 
 import javax.swing.*;
+import java.util.List;
 
+import chat.*;
+import user.*;
 import message.*;
-import server.ChatServer;
 
 import java.awt.*;
 import java.io.IOException;
@@ -23,6 +25,7 @@ public class ClientGUI extends JFrame {
         // chatHistoryManager = new ChatHistoryManager(); // 初始化聊天记录管理器
         buildGUI();
         startMessageReceiver();
+        startSyncAsker();
     }
 
     /**
@@ -57,8 +60,8 @@ public class ClientGUI extends JFrame {
         this.setVisible(true);
 
         // 添加默认会话
-        // addChat("世界频道");
-        // switchChat("世界频道");
+        addChat("世界频道");
+        switchChat("世界频道");
         // 从聊天记录管理器加载已有的聊天记录
         loadChatHistories();
     }
@@ -74,11 +77,11 @@ public class ClientGUI extends JFrame {
         switchChat("世界频道");
     }
 
-    // private void addChat(String chatName) {
-    // if (!chatListModel.contains(chatName)) {
-    // chatListModel.addElement(chatName);
-    // }
-    // }
+    private void addChat(String chatName) {
+        if (!chatListModel.contains(chatName)) {
+            chatListModel.addElement(chatName);
+        }
+    }
 
     /**
      * 切换聊天对象，更新聊天窗口内容
@@ -127,45 +130,102 @@ public class ClientGUI extends JFrame {
                 while ((message = ChatClient.getClientIO().receiveMessage()) != null) {
                     if (message instanceof TextMessage) {
                         TextMessage textMessage = (TextMessage) message;
-                        switch (textMessage.getMessageType()) {
-                            case "chat":// 群组或私聊
-
-                                break;
-
-                            default:
-
-                                break;
+                        if ("chat".equals(textMessage.getMessageType())) {
+                            handleChatMessage(textMessage);
                         }
-                    } else if (message instanceof FileMessage) {
-                        // 处理文件信息
-                        // ChatServer.getClientManager().broadcastMessageToAll(message);
+                    } else if (message instanceof SyncChats) {
+                        handleSyncChats((SyncChats) message);
+                    } else if (message instanceof SyncUsers) {
+                        handleSyncUsers((SyncUsers) message);
                     }
                 }
-
-                // String message;
-                // while ((message = ChatClient.getClientIO().receiveMessage()) != null) {
-                // if (message.startsWith("/group")) {
-                // String[] parts = message.split(" ", 3);
-                // if (parts.length == 3) {
-                // String groupName = parts[1];
-                // String groupMessage = parts[2];
-                // ChatClient.getChatHistoryManager().appendMessage(groupName, groupMessage); //
-                // 保存群聊记录
-                // if (groupName.equals(currentChat)) {
-                // chatArea.append(message + "\n"); // 只更新当前聊天窗口的内容
-                // }
-                // }
-                // } else {
-                // ChatClient.getChatHistoryManager().appendMessage("世界频道", message); //
-                // 保存公共频道记录
-                // if (currentChat.equals("世界频道")) {
-                // chatArea.append(message + "\n"); // 只更新当前聊天窗口的内容
-                // }
-                // }
-                // }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }).start();
     }
+
+    /**
+     * 向服务端发送同步信息请求
+     */
+    private void startSyncAsker() {
+        new Thread(() -> {
+            try {
+                while (true) {// 向服务端发送同步信息请求
+                    TextMessage message = new TextMessage(ChatClient.getUser().getUserID(), 0, "", "syncMessage");
+                    ChatClient.getClientIO().sendMessage(message);
+                    Thread.sleep(3000);
+                }
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    /**
+     * 处理同步聊天列表的消息
+     */
+    private void handleSyncChats(SyncChats syncChats) {
+        List<Chat> chats = syncChats.getChats();
+        for (Chat chat : chats) {
+            addChat(chat.getChatName());
+            ChatClient.getChatHistoryManager().saveChatHistory(chat);
+        }
+    }
+
+    /**
+     * 处理同步聊天列表的消息
+     */
+    private void handleSyncUsers(SyncUsers syncUsers) {
+        User user = syncUsers.getUser();
+        ChatClient.setUser(user);// 获取本地用户信息
+        List<User> users = syncUsers.getUsers();
+        ChatClient.getUsersCache().addCache(users);// 获取其他用户信息
+    }
+
+    /**
+     * 处理聊天消息
+     */
+    private void handleChatMessage(TextMessage textMessage) {
+        String message = ChatClient.getUsersCache().getUsername(textMessage.getSenderId()) + ": "
+                + textMessage.getContent() + "\n";
+        if (currentChat != null
+                && currentChat.equals(ChatClient.getChatHistoryManager().getChatname(textMessage.getChatId()))) {
+            chatArea.append(message);
+        }
+        ChatClient.getChatHistoryManager().appendMessage(currentChat, message);
+    }
+
+    // /**
+    // * 接收消息并分类处理
+    // */
+    // private void startMessageReceiver() {
+    // new Thread(() -> {
+    // try {
+    // Message message;
+    // while ((message = ChatClient.getClientIO().receiveMessage()) != null) {
+    // if (message instanceof TextMessage) {
+    // TextMessage textMessage = (TextMessage) message;
+    // switch (textMessage.getMessageType()) {
+    // case "sync":
+
+    // break;
+    // case "chat":// 群组或私聊
+
+    // break;
+
+    // default:
+
+    // break;
+    // }
+    // } else if (message instanceof FileMessage) {
+    // // 处理文件信息
+    // // ChatServer.getClientManager().broadcastMessageToAll(message);
+    // }
+    // }
+    // } catch (IOException | ClassNotFoundException e) {
+    // e.printStackTrace();
+    // }
+    // }).start();
+    // }
 }

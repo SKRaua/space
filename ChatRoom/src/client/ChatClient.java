@@ -15,10 +15,12 @@ public class ChatClient {
     private static MessageIO clientIO; // 与服务器的IO交互类
     private static JFrame chatClientUI; // 客户端UI
     private static ChatHistoryManager chatHistoryManager; // 聊天记录管理器
+    private static UsersCache usersCache; // 用户列表缓存
     private static User user;// 用户
 
     public ChatClient(String serverAddress, int serverPort) {
         chatHistoryManager = new ChatHistoryManager(); // 初始化聊天记录管理器
+        usersCache = new UsersCache();
         initializeUI(serverAddress, serverPort); // 初始化UI
     }
 
@@ -40,8 +42,16 @@ public class ChatClient {
      * 
      * @throws IOException
      */
-    public static void sendMessage(String textMessage) throws IOException {
-        clientIO.sendMessage(new TextMessage(-1, 0, textMessage));
+    public static void sendMessage(String stringMessage) throws IOException {
+        if (stringMessage.startsWith("/")) {
+            String[] parts = stringMessage.split("[/ ]", 2);
+            String messageType = parts[0];
+            String textMessage = parts[1];
+            clientIO.sendMessage(new TextMessage(user.getUserID(), 0, textMessage, messageType));
+        } else {
+            clientIO.sendMessage(new TextMessage(user.getUserID(), 0, stringMessage));
+        }
+
         // try {
         // if (currentChat.equals("世界频道")) {
         // // ChatClient.getClientIO().sendMessage(message);
@@ -58,48 +68,20 @@ public class ChatClient {
         // }
     }
 
-    /**
-     * 接收消息并分类处理
-     */
-    private void startMessageReceiver() {
-        new Thread(() -> {
-            try {
+    // public int getUserID() {
+    // return user.getUserID();
+    // }
 
-                // String message;
-                // while ((message = ChatClient.getClientIO().receiveMessage()) != null) {
-                // if (message.startsWith("/group")) {
-                // String[] parts = message.split(" ", 3);
-                // if (parts.length == 3) {
-                // String groupName = parts[1];
-                // String groupMessage = parts[2];
-                // ChatClient.getChatHistoryManager().appendMessage(groupName, groupMessage); //
-                // 保存群聊记录
-                // if (groupName.equals(currentChat)) {
-                // chatArea.append(message + "\n"); // 只更新当前聊天窗口的内容
-                // }
-                // }
-                // } else {
-                // ChatClient.getChatHistoryManager().appendMessage("世界频道", message); //
-                // 保存公共频道记录
-                // if (currentChat.equals("世界频道")) {
-                // chatArea.append(message + "\n"); // 只更新当前聊天窗口的内容
-                // }
-                // }
-                // }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+    // public String getUserName() {
+    // return user.getUserName();
+    // }
+
+    public static User getUser() {
+        return user;
     }
 
-}
-
-    public int getUserID() {
-        return user.getUserID();
-    }
-
-    public String getUserName() {
-        return user.getUserName();
+    public static void setUser(User user) {
+        ChatClient.user = user;
     }
 
     /**
@@ -155,4 +137,14 @@ public class ChatClient {
     public static void setChatHistoryManager(ChatHistoryManager chatHistoryManager) {
         ChatClient.chatHistoryManager = chatHistoryManager;
     }
+
+    /**
+     * 获取用户缓存
+     * 
+     * @return
+     */
+    public static UsersCache getUsersCache() {
+        return usersCache;
+    }
+
 }

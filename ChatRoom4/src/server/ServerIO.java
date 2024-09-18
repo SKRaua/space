@@ -37,9 +37,9 @@ public class ServerIO implements Runnable {
             out.println("[/register <用户名> <密码> <确认密码>] 来注册");
             out.println("[/login <用户名> <密码>] 来登陆");
             out.println("[/private <用户名> <消息>] 发送私密信息");
-            out.println("[/createGroup <群聊名称>] 创建群聊");
-            out.println("[/joinGroup <群聊名称>] 加入群聊");
-            out.println("[/leaveGroup <群聊名称>] 离开群聊");
+            out.println("[/createChat <聊天名称>] 创建聊天");
+            out.println("[/joinChat <聊天名称>] 加入聊天");
+            out.println("[/leaveChat <聊天名称>] 离开聊天");
             out.println("[/clientList] 获取用户列表");
 
             String message;
@@ -51,15 +51,15 @@ public class ServerIO implements Runnable {
                 } else if (username != null) { // 用户登陆
                     if (message.startsWith("/")) { // 判断指令信息
                         if (message.startsWith("/private")) { // 私聊
-                            sendPrivateMessage(message);
-                        } else if (message.startsWith("/createGroup")) { // 创建群聊
-                            createGroupChat(message);
-                        } else if (message.startsWith("/joinGroup")) { // 加入群聊
-                            joinGroupChat(message);
-                        } else if (message.startsWith("/leaveGroup")) { // 离开群聊
-                            leaveGroupChat(message);
-                        } else if (message.startsWith("/group")) { // 群聊信息
-                            groupMessage(message);
+                            privateMessage(message);
+                        } else if (message.startsWith("/createChat")) { // 创建群聊
+                            createChat(message);
+                        } else if (message.startsWith("/joinChat")) { // 加入群聊
+                            joinChatChat(message);
+                        } else if (message.startsWith("/leaveChat")) { // 离开群聊
+                            leaveChatChat(message);
+                        } else if (message.startsWith("/chat")) { // 群聊信息
+                            chatMessage(message);
                         } else if (message.startsWith("/clientList")) { // 用户列表
                             sendClientList();
                         }
@@ -164,7 +164,7 @@ public class ServerIO implements Runnable {
      * @param message 格式：/private <用户名> <消息>
      * @throws IOException
      */
-    private void sendPrivateMessage(String message) throws IOException {
+    private void privateMessage(String message) throws IOException {
         String[] parts = message.split(" ", 3);
         if (parts.length == 3) {
             String targetUsername = parts[1];
@@ -182,33 +182,33 @@ public class ServerIO implements Runnable {
     /**
      * 发送群聊消息
      *
-     * @param message 格式：/group <群聊> <消息>
+     * @param message 格式：/chat <群聊> <消息>
      * @throws IOException
      */
-    private void groupMessage(String message) throws IOException {
+    private void chatMessage(String message) throws IOException {
         String[] parts = message.split(" ", 3);
         if (parts.length == 3) {
-            String groupName = parts[1];
-            String groupMessage = parts[2];
-            ChatServer.getClientManager().broadcastMessage(groupName,
-                    "/group " + groupName + " [" + username + "]: " + groupMessage);
+            String chatName = parts[1];
+            String chatMessage = parts[2];
+            ChatServer.getClientManager().broadcastMessage(chatName,
+                    "/chat " + chatName + " [" + username + "]: " + chatMessage);
         }
     }
 
     /**
      * 处理群聊创建请求
      * 
-     * @param message 格式：/createGroup <群聊名称>
+     * @param message 格式：/createChat <群聊名称>
      * @throws IOException
      */
-    private void createGroupChat(String message) throws IOException {
+    private void createChat(String message) throws IOException {
         String[] parts = message.split(" ", 2);
         if (parts.length == 2) {
-            String groupName = parts[1];
-            if (ChatServer.getClientManager().createGroupChat(groupName, this)) {
-                sendMessage("/group " + groupName + " 群聊 " + groupName + " 创建成功");
+            String chatName = parts[1];
+            if (ChatServer.getClientManager().createChat(chatName, this)) {
+                sendMessage("/chat " + chatName + " 群聊 " + chatName + " 创建成功");
             } else {
-                sendMessage("群聊 " + groupName + " 已存在");
+                sendMessage("群聊 " + chatName + " 已存在");
             }
 
         }
@@ -217,30 +217,30 @@ public class ServerIO implements Runnable {
     /**
      * 处理加入群聊请求
      * 
-     * @param message 格式：/joinGroup <群聊名称>
+     * @param message 格式：/joinChat <群聊名称>
      * @throws IOException
      */
-    private void joinGroupChat(String message) throws IOException {
+    private void joinChatChat(String message) throws IOException {
         String[] parts = message.split(" ", 2);
         if (parts.length == 2) {
-            String groupName = parts[1];
-            ChatServer.getClientManager().addMemberToGroup(groupName, this);
-            ChatServer.getClientManager().broadcastMessage(groupName,
-                    "/group " + groupName + " " + username + " 成功加入 " + groupName);
+            String chatName = parts[1];
+            ChatServer.getClientManager().addMemberToChat(chatName, this);
+            ChatServer.getClientManager().broadcastMessage(chatName,
+                    "/chat " + chatName + " " + username + " 成功加入 " + chatName);
         }
     }
 
     /**
      * 处理离开群聊请求
      * 
-     * @param message 格式：/leaveGroup <群聊名称>
+     * @param message 格式：/leaveChat <群聊名称>
      * @throws IOException
      */
-    private void leaveGroupChat(String message) throws IOException {
+    private void leaveChatChat(String message) throws IOException {
         String[] parts = message.split(" ", 2);
         if (parts.length == 2) {
-            String groupName = parts[1];
-            ChatServer.getClientManager().removeMemberFromGroup(groupName, this);
+            String chatName = parts[1];
+            ChatServer.getClientManager().removeMemberFromChat(chatName, this);
         }
     }
 

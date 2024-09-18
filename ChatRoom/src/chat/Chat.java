@@ -28,7 +28,7 @@ public class Chat {
         return chatId;
     }
 
-    public String getchatName() {
+    public String getChatName() {
         return chatName;
     }
 

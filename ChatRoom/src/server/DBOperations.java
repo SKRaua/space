@@ -3,6 +3,7 @@ package server;
 import java.sql.*;
 import java.util.*;
 
+import chat.Chat;
 import message.*;
 
 import java.time.ZonedDateTime;
@@ -278,4 +279,37 @@ public class DBOperations {
             }
         }
     }
+
+    public List<Chat> findChatGroups(int userID) throws SQLException {
+        List<Chat> chatGroups = new ArrayList<>();
+
+        String sql = "SELECT cg.chat_id, cg.chat_name, u.user_name " +
+                "FROM chat_groups cg " +
+                "JOIN user_chat_map ucm ON cg.chat_id = ucm.chat_id " +
+                "JOIN users u ON ucm.user_id = u.user_id " +
+                "WHERE ucm.user_id = ?";
+
+        Map<Integer, Chat> chatMap = new HashMap<>();
+
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, userID);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int chatID = rs.getInt("chat_id");
+                    String chatName = rs.getString("chat_name");
+                    String userName = rs.getString("user_name");
+
+                    if (!chatMap.containsKey(chatID)) {
+                        Chat chat = new Chat(chatID, chatName);
+                        chatMap.put(chatID, chat);
+                    }
+                    chatMap.get(chatID).addParticipant(userName);
+                }
+            }
+        }
+
+        chatGroups.addAll(chatMap.values());
+        return chatGroups;
+    }
+
 }

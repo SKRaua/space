@@ -48,14 +48,14 @@ public class MessageIO {
     }
 
     // /**
-    //  * 发送文本信息
-    //  *
-    //  * @param message
-    //  * @throws IOException
-    //  */
+    // * 发送文本信息
+    // *
+    // * @param message
+    // * @throws IOException
+    // */
     // public void sendMessage(String message) throws IOException {
-    //     out.writeObject(new TextMessage("0", "","",message));
-    //     out.flush();
+    // out.writeObject(new TextMessage("0", "","",message));
+    // out.flush();
     // }
 
     /**
@@ -67,6 +67,17 @@ public class MessageIO {
     public Message receiveMessage() throws IOException, ClassNotFoundException {
         return (Message) in.readObject();
     }
+
+    // /**
+    //  * 同步信息
+    //  *
+    //  * @return
+    //  * @throws IOException
+    //  */
+    // @SuppressWarnings("unchecked")
+    // public List<Message> receiveLsit() throws IOException, ClassNotFoundException {
+    //     return (List<Message>) in.readObject();
+    // }
 
     /**
      * 关闭连接

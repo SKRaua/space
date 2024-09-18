@@ -63,18 +63,18 @@ public class ClientGUI extends JFrame {
      * 加载所有聊天记录并添加到聊天列表
      */
     private void loadChatHistories() {
-        chatListModel.addElement("世界频道");
+        addChat("世界频道");
         for (String chatName : ChatClient.getChatHistoryManager().getAllChatHistories().keySet()) {
-            chatListModel.addElement(chatName);
+            addChat(chatName);
         }
         switchChat("世界频道");
     }
 
-    // private void addChat(String chatName) {
-    // if (!chatListModel.contains(chatName)) {
-    // chatListModel.addElement(chatName);
-    // }
-    // }
+    private void addChat(String chatName) {
+        if (!chatListModel.contains(chatName)) {
+            chatListModel.addElement(chatName);
+        }
+    }
 
     /**
      * 切换聊天对象，更新聊天窗口内容
@@ -95,7 +95,7 @@ public class ClientGUI extends JFrame {
             if (currentChat.equals("世界频道")) {
                 ChatClient.getClientIO().sendMessage(message);
             } else {
-                ChatClient.getClientIO().sendMessage("/group " + currentChat + " " + message);
+                ChatClient.getClientIO().sendMessage("/chat " + currentChat + " " + message);
             }
             inputField.setText("");
             // chatHistoryManager.appendMessage(currentChat, "我: " + message); // 保存到聊天记录
@@ -112,14 +112,15 @@ public class ClientGUI extends JFrame {
             try {
                 String message;
                 while ((message = ChatClient.getClientIO().receiveMessage()) != null) {
-                    if (message.startsWith("/group")) {
+                    if (message.startsWith("/chat")) {
                         String[] parts = message.split(" ", 3);
                         if (parts.length == 3) {
-                            String groupName = parts[1];
-                            String groupMessage = parts[2];
-                            ChatClient.getChatHistoryManager().appendMessage(groupName, groupMessage); // 保存群聊记录
-                            if (groupName.equals(currentChat)) {
-                                chatArea.append(message + "\n"); // 只更新当前聊天窗口的内容
+                            String chatName = parts[1];
+                            String chatMessage = parts[2];
+                            ChatClient.getChatHistoryManager().appendMessage(chatName, chatMessage); // 保存群聊记录
+                            addChat(chatName);
+                            if (chatName.equals(currentChat)) {
+                                chatArea.append(chatMessage + "\n"); // 只更新当前聊天窗口的内容
                             }
                         }
                     } else {

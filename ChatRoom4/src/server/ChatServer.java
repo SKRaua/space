@@ -19,6 +19,7 @@ public class ChatServer {
             ChatServer.dbOperations = new DBOperations(dbConfig);// 实例数据库操作对象
             ChatServer.clientManager = new ClientManager();// 实例客户端管理对象
             this.serverSocket = new ServerSocket(port);// 实例服务器套接字对象
+            testConnection();
             Logger.log("聊天室服务端在端口 " + port + " 上运行中。。。");
             startServer();// 等待客户端连接（阻塞程序）
         } catch (IOException e) {
@@ -89,6 +90,7 @@ public class ChatServer {
     public static boolean testConnection() {
         try {
             // 测试连接（具体实现依赖于 DBOperations 的实现）
+            Logger.log("测试数据库连接成功！");
             return dbOperations.testConnection();
         } catch (Exception e) {
             Logger.log("测试数据库连接失败！");
