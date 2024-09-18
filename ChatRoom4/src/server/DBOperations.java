@@ -52,16 +52,10 @@ public class DBOperations {
     public boolean createChat(String creator, String chatName) throws SQLException {
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn
-                        .prepareStatement("INSERT INTO chats (chat_creator, chat_name) VALUES (?, ?)")) {
-            pstmt.setString(1, creator);
-            pstmt.setString(2, chatName);
-            pstmt.executeUpdate();
-            if (addMemberToChat(creator, chatName)) {
-                return true;
-            } else {
-                deleteChat(chatName);
-                return false;
-            }
+                        .prepareStatement("INSERT INTO chats (chat_name) VALUES (?)")) {
+            pstmt.setString(1, chatName);
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0 && addMemberToChat(creator, chatName);
         }
     }
 
@@ -79,7 +73,7 @@ public class DBOperations {
     public boolean addMemberToChat(String username, String chatName) throws SQLException {
         try (Connection conn = getConnection();
                 PreparedStatement pstmt = conn
-                        .prepareStatement("INSERT INTO uesr_chat_map (user_name, chat_name) VALUES (?, ?)")) {
+                        .prepareStatement("INSERT INTO user_chat_map (user_name, chat_name) VALUES (?, ?)")) {
             pstmt.setString(1, username);
             pstmt.setString(2, chatName);
             return pstmt.executeUpdate() > 0;

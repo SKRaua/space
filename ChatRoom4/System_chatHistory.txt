@@ -1,0 +1,68 @@
+#世界频道
+[/register <用户名> <密码> <确认密码>] 来注册
+[/login <用户名> <密码>] 来登陆
+[/private <用户名> <消息>] 发送私密信息
+[/createChat <聊天名称>] 创建聊天
+[/joinChat <聊天名称>] 加入聊天
+[/leaveChat <聊天名称>] 离开聊天
+[/clientList] 获取用户列表
+欢迎 System！
+[System]: [System] 加入聊天
+[System]: [SKRaua] 加入聊天
+[SKRaua]: fasfsda
+[SKRaua]: 5445
+欢迎 System！
+[System]: [System] 加入聊天
+[System]: fdfd
+[System]: [SKRaua] 加入聊天
+[SKRaua]: fdfsd
+[SKRaua]: hjjh
+[SKRaua]: ghh
+欢迎 System！
+[System]: [System] 加入聊天
+[System]: [SKRaua] 加入聊天
+[SKRaua]: fsafasas
+欢迎 System！
+[System]: [System] 加入聊天
+[SKRaua]: dsada
+[SKRaua]: eee
+[System]: [SKRaua] 离开聊天。
+#testGroup
+欢迎回来
+[System]: sdfasdsf
+[System]: 544
+[SKRaua]: 45454
+[SKRaua]: 54545
+欢迎回来
+[System]: fdfd
+欢迎回来
+[System]: dsada
+[System]: dsd
+[SKRaua]: dad
+[SKRaua]: fasdfd
+[SKRaua]: dasd
+[System]: dasasdas
+[SKRaua]: dsd
+[SKRaua]: dsdsd
+[SKRaua]: adasasd
+[SKRaua]: dadada
+[SKRaua]: sdfasfas
+[SKRaua]: afsdfdas
+欢迎回来
+[SKRaua]: dasdassd
+[SKRaua]: dasd
+[SKRaua]: 56565
+[SKRaua]: 65665
+[SKRaua]: dasd
+[SKRaua]: dasds
+[SKRaua]: sdasas
+[SKRaua]: dasdas
+[SKRaua]: dasd
+[SKRaua]: dsadas
+[SKRaua]: dsad
+[SKRaua]: dasa
+[SKRaua]: dasdasdsa
+[SKRaua]: dasdas
+[SKRaua]: dasd
+[SKRaua]: ee
+[SKRaua]: eee

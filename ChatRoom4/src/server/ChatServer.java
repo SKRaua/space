@@ -8,22 +8,23 @@ import java.net.Socket;
  * 服务器管理类
  */
 public class ChatServer {
-    private ServerSocket serverSocket;
+    private static ServerSocket serverSocket;
     // private ServerGUI serverGUI; // 服务器UI
     private static DBOperations dbOperations; // 数据库连接
     private static ClientManager clientManager; // 客户端管理器
+    private static Thread server;// 等待客户端连接的线程
 
     public ChatServer(int port, String[] dbConfig) {
         try {
             new ServerGUI(dbConfig); // 初始化服务器UI // this.serverGUI =
             ChatServer.dbOperations = new DBOperations(dbConfig);// 实例数据库操作对象
             ChatServer.clientManager = new ClientManager();// 实例客户端管理对象
-            this.serverSocket = new ServerSocket(port);// 实例服务器套接字对象
+            ChatServer.serverSocket = new ServerSocket(port);// 实例服务器套接字对象
             testConnection();
             Logger.log("聊天室服务端在端口 " + port + " 上运行中。。。");
             Logger.log("执行终端指令: /help 查看帮助\n");
 
-            startServer();// 启动线程等待客户端连接
+            ChatServer.server = startServer();// 启动线程等待客户端连接
         } catch (IOException e) {
             Logger.log("服务器异常");
             e.printStackTrace();
@@ -33,8 +34,8 @@ public class ChatServer {
     /**
      * 启动服务器
      */
-    private void startServer() {
-        new Thread(() -> {
+    private static Thread startServer() {
+        Thread server = new Thread(() -> {
             while (true) {
                 try {
                     Socket socket = serverSocket.accept();
@@ -47,7 +48,28 @@ public class ChatServer {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
+        server.start();
+        return server;
+    }
+
+    /**
+     * 重启服务器
+     * 
+     * @return 客户端管理器
+     */
+    public static boolean reStartServer(int port) {
+        server.interrupt();// 停止等待连接
+        clientManager.removeAll();// 清理客户端处理线程
+        try {
+            ChatServer.serverSocket.close();
+            ChatServer.serverSocket = new ServerSocket(port);
+            ChatServer.server = startServer();// 启动线程等待客户端连接
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     /**

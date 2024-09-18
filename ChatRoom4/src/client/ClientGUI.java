@@ -121,12 +121,19 @@ public class ClientGUI extends JFrame {
                                 chatArea.append(chatMessage + "\n"); // 只更新当前聊天窗口的内容
                             }
                         }
+                    } else if (message.startsWith("/rmChat")) {// 移出群聊
+                        String[] parts = message.split(" ", 2);
+                        if (parts.length == 2) {
+                            String chatNameToRm = parts[1];
+                            ChatClient.getChatHistoryManager().deleteChatHistory(chatNameToRm);
+                            chatListModel.removeElement(chatNameToRm);
+                        }
                     } else if (message.startsWith("/login")) {
                         String[] parts = message.split(" ", 2);
                         if (parts.length == 2) {
                             String username = parts[1];
                             ChatClient.setUsername(username);
-                           ChatClient.getChatHistoryManager().loadChatHistory(ChatClient.getUsername());
+                            ChatClient.getChatHistoryManager().loadChatHistory(ChatClient.getUsername());
                         }
                     } else {
                         ChatClient.getChatHistoryManager().appendMessage("世界频道", message); // 保存公共频道记录

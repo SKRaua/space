@@ -114,7 +114,7 @@ public class ServerGUI extends JFrame {
         String[] dbConfig = { urlLink, userLink, passwordLink };
         boolean isConnected = ChatServer.getDbOperations().reconnectDatabase(dbConfig);
         if (isConnected) {
-            Logger.log("数据库重连成功\n");
+            Logger.log("数据库重连成功");
         } else {
             Logger.log("数据库重连失败\n");
         }
@@ -123,9 +123,9 @@ public class ServerGUI extends JFrame {
     private void testConnection() {
         boolean isConnected = ChatServer.getDbOperations().testConnection();
         if (isConnected) {
-            Logger.log("数据库连接测试成功\n");
+            Logger.log("数据库连接测试成功");
         } else {
-            Logger.log("数据库连接测试失败\n");
+            Logger.log("数据库连接测试失败");
         }
     }
 
@@ -135,19 +135,19 @@ public class ServerGUI extends JFrame {
             if (!sql.isEmpty()) {
                 if (sql.trim().toLowerCase().startsWith("select")) {
                     List<Map<String, Object>> result = ChatServer.getDbOperations().executeQuery(sql);
-                    Logger.log("SQL 查询结果: \n");
+                    Logger.log("SQL 查询结果: ");
                     for (Map<String, Object> row : result) {
-                        Logger.log(row.toString() + "\n");
+                        Logger.log(row.toString());
                     }
                 } else {
                     int rowsAffected = ChatServer.getDbOperations().executeUpdate(sql);
-                    Logger.log(" 执行SQL 影响行数: " + rowsAffected + "\n");
+                    Logger.log(" 执行SQL 影响行数: " + rowsAffected);
                 }
             } else {
-                Logger.log("SQL 不能为空\n");
+                Logger.log("SQL 不能为空");
             }
         } catch (SQLException e) {
-            Logger.log("数据库操作异常\n");
+            Logger.log("数据库操作异常");
 
         }
     }
@@ -156,16 +156,17 @@ public class ServerGUI extends JFrame {
         String command = terminalField.getText();
         if (!command.isEmpty()) {
             if (command.startsWith("/")) {
-                Logger.log("执行终端指令: " + command + "\n");
+                Logger.log("执行终端指令: " + command);
                 String[] commandInfo = command.substring(1).split(" ", 2);
                 if (commandInfo.length > 0) {
                     String commandType = commandInfo[0];
                     switch (commandType) {
                         case "help":// 获取帮助
                             Logger.log("[/kickout <用户名>] 踢出用户");
-                            Logger.log("[/addmemtoChat <用户名> <聊天>] 把用户加入聊天");
-                            Logger.log("[/removememberfromchat <用户名> <聊天>] 把用户移除聊天");
-                            Logger.log("[/createchat <用户名> <聊天>] 把用户移除聊天");
+                            Logger.log("[/admemtochat <用户名> <聊天>] 把用户加入聊天");
+                            Logger.log("[/rmmemfromchat <用户名> <聊天>] 把用户移除聊天");
+                            Logger.log("[/createchat <聊天>] 创建聊天");
+                            Logger.log("[/restart <端口>] 在指定端口上重建服务器连接");
                             break;
                         case "kickout":
                             if (commandInfo.length == 2) {
@@ -179,7 +180,7 @@ public class ServerGUI extends JFrame {
                                 Logger.log("格式错误：/kickOut <用户名>");
                             }
                             break;
-                        case "addmemtoChat":
+                        case "admemtochat":
                             if (commandInfo.length == 2) {
                                 String[] memToChat = commandInfo[1].split(" ", 2);
                                 if (memToChat.length == 2) {
@@ -197,13 +198,13 @@ public class ServerGUI extends JFrame {
                                 Logger.log("格式错误：/addMemToChat <用户名> <聊天>");
                             }
                             break;
-                        case "removememberfromchat":
+                        case "rmmemfromchat":
                             if (commandInfo.length == 2) {
                                 String[] removeInfo = commandInfo[1].split(" ", 2);
                                 if (removeInfo.length == 2) {
                                     String removedUser = removeInfo[0].trim();
                                     String chatName = removeInfo[1].trim();
-                                    if (ChatServer.getClientManager().removeMemberFromChat(chatName, removedUser)) {
+                                    if (ChatServer.getClientManager().removeMemberFromChat(removedUser, chatName)) {
                                         Logger.log("用户 " + removedUser + " 成功从聊天 " + chatName + " 中移除");
                                     } else {
                                         Logger.log("移除用户失败或聊天不存在");
@@ -221,7 +222,19 @@ public class ServerGUI extends JFrame {
                                 if (ChatServer.getClientManager().createChat(chatName)) {
                                     Logger.log("群聊 " + chatName + " 创建成功");
                                 } else {
-                                    Logger.log("群聊 " + chatName + " 已存在");
+                                    Logger.log("群聊 " + chatName + " 创建异常");
+                                }
+                            } else {
+                                Logger.log("格式错误：/createChat <聊天名称>");
+                            }
+                            break;
+                        case "restart":
+                            if (commandInfo.length == 2) {
+                                int port = Integer.parseInt(commandInfo[1].trim());
+                                if (ChatServer.reStartServer(port)) {
+                                    Logger.log("聊天室服务端在端口 " + port + " 上运行中。。。");
+                                } else {
+                                    Logger.log("服务器创建失败");
                                 }
                             } else {
                                 Logger.log("格式错误：/createChat <聊天名称>");
@@ -234,7 +247,7 @@ public class ServerGUI extends JFrame {
                 }
             }
         } else {
-            Logger.log("终端指令不能为空\n");
+            Logger.log("终端指令不能为空");
         }
     }
 }

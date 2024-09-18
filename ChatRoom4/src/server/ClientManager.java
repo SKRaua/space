@@ -148,7 +148,7 @@ public class ClientManager {
             ChatServer.getDbOperations().createChat("System", chatName);
             return true;
         } catch (SQLException e) {
-            Logger.log("添加群聊发送数据库异常");
+            Logger.log("添加群聊发生数据库异常");
             e.printStackTrace();
             return false;
         } // 添加到数据库
@@ -194,15 +194,23 @@ public class ClientManager {
      * @param chatName 群聊名称
      * @param member   成员
      */
-    public void addMemberToChat(String chatName, ClientHandler member) {
+    public boolean addMemberToChat(String chatName, ClientHandler member) {
         chatHandlers.computeIfAbsent(chatName, k -> new HashSet<>()).add(member);
+        try {
+            member.sendMessage("/chat " + chatName + " 欢迎！");
+        } catch (IOException e) {
+            Logger.log("添加聊天成员发生客户端连接异常");
+
+            e.printStackTrace();
+        }
         // 同步添加到数据库中
         try {
-            ChatServer.getDbOperations().addMemberToChat(member.getUsername(), chatName);
+            return ChatServer.getDbOperations().addMemberToChat(member.getUsername(), chatName);
         } catch (SQLException e) {
             Logger.log("添加聊天成员发生数据库异常");
             e.printStackTrace();
         }
+        return false;
     }
 
     /**
@@ -214,8 +222,7 @@ public class ClientManager {
     public boolean addMemberToChat(String userName, String chatName) {
         ClientHandler client = findClient(userName);
         if (client != null) {
-            addMemberToChat(chatName, client);
-            return true;
+            return addMemberToChat(chatName, client);
         } else {
             return false;
         }
@@ -227,18 +234,25 @@ public class ClientManager {
      * @param chatName 群聊名称
      * @param member   成员
      */
-    public void removeMemberFromChat(String chatName, ClientHandler member) {
+    public boolean removeMemberFromChat(String chatName, ClientHandler member) {
         Set<ClientHandler> members = chatHandlers.get(chatName);
         if (members != null) {
             members.remove(member);
+            try {
+                member.sendMessage("/rmChat " + chatName);
+            } catch (IOException e) {
+                Logger.log("删除聊天成员发生客户端连接异常");
+                e.printStackTrace();
+            }
             // 同步删除数据库中的成员
             try {
-                ChatServer.getDbOperations().removeMemberFromChat(member.getUsername(), chatName);
+                return ChatServer.getDbOperations().removeMemberFromChat(member.getUsername(), chatName);
             } catch (SQLException e) {
                 Logger.log("删除聊天成员发生数据库异常");
                 e.printStackTrace();
             }
         }
+        return false;
     }
 
     /**
@@ -250,11 +264,30 @@ public class ClientManager {
     public boolean removeMemberFromChat(String userName, String chatName) {
         ClientHandler client = findClient(userName);
         if (client != null) {
-            removeMemberFromChat(chatName, client);
-            return true;
+            return removeMemberFromChat(chatName, client);
         } else {
             return false;
         }
 
+    }
+
+    /**
+     * 删除所有线程与连接
+     *
+     * @return
+     */
+    public boolean removeAll() {
+        // 中断所有客户端处理线程
+        for (Thread thread : handlerThreads.values()) {
+            if (thread.isAlive()) {
+                thread.interrupt();
+            }
+        }
+        // 清空集合
+        allHandlers.clear();
+        chatHandlers.clear();
+        handlerThreads.clear();
+
+        return true;
     }
 }
