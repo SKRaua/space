@@ -5,27 +5,33 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 服务端的控制终端UI
+ */
 public class ServerGUI extends JFrame {
     // UI组件
-    private JTextField urlField;
-    private JTextField userField;
-    private JPasswordField passwordField; // 使用JPasswordField代替JTextField
-    private JTextField terminalField;
-    private JTextField sqlField;
-    private JTextArea logArea;
+    private JTextField urlField;// 数据库地址
+    private JTextField userField;// 数据库用户名
+    private JPasswordField passwordField; // 密码框
+    private JTextField terminalField;// 终端区域
+    private JTextField sqlField;// sql查询框
+    private JTextArea logArea;// 日志框
 
-    private JButton connectButton;
-    private JButton testConnectionButton;
-    private JButton executeSqlButton;
-    private JButton executeCommandButton;
+    private JButton connectButton;// 连接数据库按钮
+    private JButton testConnectionButton;// 测试连接按钮
+    private JButton executeSqlButton;// 执行sql按钮
+    private JButton executeCommandButton;// 执行指令按钮
 
     public ServerGUI(String[] dbConfig) {
         super("SKRaua聊天室服务终端");
-        // ServerGUI.dbConnection = DBConnection.getInstance(url, user, password);
         buildGUI(dbConfig);
-        // this.linkWaiter = new linkWaiter(); // 实例化 ChatServer
     }
 
+    /**
+     * 构建UI
+     * 
+     * @param dbConfig
+     */
     private void buildGUI(String[] dbConfig) {
         // 初始化UI组件
         logArea = new JTextArea();
@@ -107,6 +113,9 @@ public class ServerGUI extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * 重连数据库方法
+     */
     private void reconnectDatabase() {
         String urlLink = urlField.getText();
         String userLink = userField.getText();
@@ -120,6 +129,9 @@ public class ServerGUI extends JFrame {
         }
     }
 
+    /**
+     * 测试数据库连接
+     */
     private void testConnection() {
         boolean isConnected = ChatServer.getDbOperations().testConnection();
         if (isConnected) {
@@ -129,17 +141,20 @@ public class ServerGUI extends JFrame {
         }
     }
 
+    /**
+     * 执行sql语句
+     */
     private void executeSqlStatement() {
         try {
             String sql = sqlField.getText();
             if (!sql.isEmpty()) {
-                if (sql.trim().toLowerCase().startsWith("select")) {
+                if (sql.trim().toLowerCase().startsWith("select")) {// 查询
                     List<Map<String, Object>> result = ChatServer.getDbOperations().executeQuery(sql);
                     Logger.log("SQL 查询结果: ");
                     for (Map<String, Object> row : result) {
                         Logger.log(row.toString());
                     }
-                } else {
+                } else {// 其他操作
                     int rowsAffected = ChatServer.getDbOperations().executeUpdate(sql);
                     Logger.log(" 执行SQL 影响行数: " + rowsAffected);
                 }
@@ -152,6 +167,9 @@ public class ServerGUI extends JFrame {
         }
     }
 
+    /**
+     * 终端指令执行
+     */
     private void executeTerminalCommand() {
         String command = terminalField.getText();
         if (!command.isEmpty()) {

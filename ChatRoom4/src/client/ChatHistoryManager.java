@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 管理客户端本地的聊天记录，在登陆后进行读取本地文件
+ */
 public class ChatHistoryManager {
     private static final String FILE_PATH_SUFFIX = "chatHistory.txt";
     private Map<String, StringBuilder> chatHistoryMap;

@@ -16,7 +16,7 @@ public class ClientIO {
      * 
      * @param serverAddress 服务端地址
      * @param serverPort    端口
-     * @throws IOException
+     * @throws IOException 连接建立异常
      */
     public ClientIO(String serverAddress, int serverPort) throws IOException {
         this.socket = new Socket(serverAddress, serverPort);
@@ -27,8 +27,8 @@ public class ClientIO {
     /**
      * 发送信息
      * 
-     * @param message
-     * @throws IOException
+     * @param message 信息
+     * @throws IOException 信息发送异常
      */
     public void sendMessage(String message) throws IOException {
         out.println(message);
@@ -37,8 +37,8 @@ public class ClientIO {
     /**
      * 读取信息
      * 
-     * @return
-     * @throws IOException
+     * @return 读到的信息
+     * @throws IOException 读取信息异常
      */
     public String receiveMessage() throws IOException {
         return in.readLine();

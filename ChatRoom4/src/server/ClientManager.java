@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 管理客户端处理器线程的集合，与数据库交互得到在线用户所在的群聊信息
+ */
 public class ClientManager {
     private Map<String, Set<ClientHandler>> chatHandlers; // 存储群聊及其成员
     private Set<ClientHandler> allHandlers; // 存储所有在线客户端

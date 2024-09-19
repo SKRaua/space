@@ -10,16 +10,16 @@ import java.net.Socket;
 public class ChatServer {
     private static ServerSocket serverSocket;
     // private ServerGUI serverGUI; // 服务器UI
-    private static DBOperations dbOperations; // 数据库连接
-    private static ClientManager clientManager; // 客户端管理器
+    private static DBOperations dbOperations; // 数据库操作类
+    private static ClientManager clientManager; // 在线客户端线程管理器
     private static Thread server;// 等待客户端连接的线程
 
     public ChatServer(int port, String[] dbConfig) {
         try {
             new ServerGUI(dbConfig); // 初始化服务器UI // this.serverGUI =
-            ChatServer.dbOperations = new DBOperations(dbConfig);// 实例数据库操作对象
-            ChatServer.clientManager = new ClientManager();// 实例客户端管理对象
-            ChatServer.serverSocket = new ServerSocket(port);// 实例服务器套接字对象
+            ChatServer.dbOperations = new DBOperations(dbConfig);
+            ChatServer.clientManager = new ClientManager();
+            ChatServer.serverSocket = new ServerSocket(port);
             testConnection();
             Logger.log("聊天室服务端在端口 " + port + " 上运行中。。。");
             Logger.log("执行终端指令: /help 查看帮助\n");
@@ -32,14 +32,14 @@ public class ChatServer {
     }
 
     /**
-     * 启动服务器
+     * 启动服务器，启动新线程用于等待连接
      */
     private static Thread startServer() {
         Thread server = new Thread(() -> {
             while (true) {
                 try {
                     Socket socket = serverSocket.accept();
-                    ClientHandler clientHandler = new ClientHandler(socket);// , clientManager
+                    ClientHandler clientHandler = new ClientHandler(socket);
                     Thread handlerThread = new Thread(clientHandler);
                     handlerThread.start();
                     clientManager.addClient(clientHandler, handlerThread);
@@ -56,7 +56,8 @@ public class ChatServer {
     /**
      * 重启服务器
      * 
-     * @return 客户端管理器
+     * @param port 使用的端口
+     * @return 重启是否成功
      */
     public static boolean reStartServer(int port) {
         server.interrupt();// 停止等待连接

@@ -8,7 +8,6 @@ import javax.swing.JFrame;
  * 客户端管理类
  */
 public class ChatClient {
-
     private static ClientIO clientIO; // 与服务器的IO交互类
     private static ChatHistoryManager chatHistoryManager; // 聊天记录管理器
     private static JFrame chatClientUI; // 客户端UI

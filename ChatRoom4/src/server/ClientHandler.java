@@ -90,7 +90,7 @@ public class ClientHandler implements Runnable {
      * 处理注册请求
      * 
      * @param message 格式：/register <用户名> <密码> <确认密码>
-     * @throws IOException
+     * @throws IOException 注册异常
      */
     private void registerHandler(String message) throws IOException {
         String[] parts = message.split(" ", 4);
@@ -101,22 +101,15 @@ public class ClientHandler implements Runnable {
 
             if (password1.equals(password2)) { // 两次输入密码相同
                 try { // 调用数据库连接，验证注册请求
-                    int result;
-                    result = ChatServer.getDbOperations().registerUser(username, password1);
-                    switch (result) {
-                        case 1:
-                            this.username = username;
-                            ChatServer.getClientManager().loadChat(this);// 同步聊天窗口
-                            Logger.log("[System]: [" + username + "] 加入聊天");
-                            out.println("欢迎 " + username + "！");
-                            ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
-                            break;
-                        case 0:
-                            out.println("用户已存在");
-                            break;
-                        default:
-                            out.println("注册异常");
-                            break;
+                    boolean result = ChatServer.getDbOperations().registerUser(username, password1);
+                    if (result) {
+                        this.username = username;
+                        ChatServer.getClientManager().loadChat(this);// 同步聊天窗口
+                        Logger.log("[System]: [" + username + "] 加入聊天");
+                        out.println("欢迎 " + username + "！");
+                        ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
+                    } else {
+                        out.println("注册异常，换个用户名试试");
                     }
                 } catch (SQLException e) {
                     out.println("注册异常");
@@ -134,7 +127,7 @@ public class ClientHandler implements Runnable {
      * 处理登录请求
      * 
      * @param message 格式：/login <用户名> <密码>
-     * @throws IOException
+     * @throws IOException 登陆异常
      */
     private void loginHandler(String message) throws IOException {
         String[] parts = message.split(" ", 3);
@@ -143,25 +136,16 @@ public class ClientHandler implements Runnable {
             String password = parts[2];
 
             try { // 调用数据库连接验证登录请求
-                int result;
-
-                result = ChatServer.getDbOperations().loginUser(username, password);
-
-                switch (result) {
-                    case 1:
-                        this.username = username;
-                        out.println("/login " + username);
-                        ChatServer.getClientManager().loadChat(this);// 同步聊天窗口
-                        Logger.log("[System]: [" + username + "] 加入聊天");
-                        out.println("欢迎 " + username + "！");
-                        ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
-                        break;
-                    case 0:
-                        out.println("用户不存在");
-                        break;
-                    default:
-                        out.println("登录异常");
-                        break;
+                boolean result = ChatServer.getDbOperations().loginUser(username, password);
+                if (result) {
+                    this.username = username;
+                    out.println("/login " + username);
+                    ChatServer.getClientManager().loadChat(this);// 同步聊天窗口
+                    Logger.log("[System]: [" + username + "] 加入聊天");
+                    out.println("欢迎 " + username + "！");
+                    ChatServer.getClientManager().broadcastMessageToAll("[System]: [" + username + "] 加入聊天");
+                } else {
+                    out.println("用户名或密码错误");
                 }
             } catch (SQLException e) {
                 out.println("登录异常");
@@ -176,7 +160,7 @@ public class ClientHandler implements Runnable {
      * 发送私聊消息
      *
      * @param message 格式：/private <用户名> <消息>
-     * @throws IOException
+     * @throws IOException 私聊异常
      */
     private void privateMessage(String message) throws IOException {
         String[] parts = message.split(" ", 3);
@@ -197,7 +181,7 @@ public class ClientHandler implements Runnable {
      * 发送群聊消息
      *
      * @param message 格式：/chat <群聊> <消息>
-     * @throws IOException
+     * @throws IOException 聊天异常
      */
     private void chatMessage(String message) throws IOException {
         String[] parts = message.split(" ", 3);
@@ -213,7 +197,7 @@ public class ClientHandler implements Runnable {
      * 处理群聊创建请求
      * 
      * @param message 格式：/createChat <群聊名称>
-     * @throws IOException
+     * @throws IOException 创建异常
      */
     private void createChat(String message) throws IOException {
         String[] parts = message.split(" ", 2);
@@ -232,7 +216,7 @@ public class ClientHandler implements Runnable {
      * 处理加入群聊请求
      * 
      * @param message 格式：/joinChat <群聊名称>
-     * @throws IOException
+     * @throws IOException 加入异常
      */
     private void joinChatChat(String message) throws IOException {
         String[] parts = message.split(" ", 2);
@@ -248,7 +232,7 @@ public class ClientHandler implements Runnable {
      * 处理离开群聊请求
      * 
      * @param message 格式：/leaveChat <群聊名称>
-     * @throws IOException
+     * @throws IOException 离开异常
      */
     private void leaveChatChat(String message) throws IOException {
         String[] parts = message.split(" ", 2);
@@ -261,7 +245,7 @@ public class ClientHandler implements Runnable {
     /**
      * 发送用户列表
      *
-     * @throws IOException
+     * @throws IOException 发送异常
      */
     private void sendClientList() throws IOException {
         Set<String> clientList = ChatServer.getClientManager().getClientList();

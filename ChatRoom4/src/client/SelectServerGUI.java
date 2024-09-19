@@ -5,11 +5,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * 选择聊天地址的UI
+ */
 public class SelectServerGUI extends JFrame {
 
-    private JTextField addressField;
-    private JTextField portField;
-    private JLabel statusLabel;
+    private JTextField addressField;// 地址输入框
+    private JTextField portField;// 端口输入框
+    private JLabel statusLabel;// 状态栏
 
     public SelectServerGUI(String serverAddress, String serverPort) {
         super("去哪聊~~");
@@ -80,7 +83,7 @@ public class SelectServerGUI extends JFrame {
             if (ChatClient.connectTo(serverAddress, serverPort)) {
                 statusLabel.setText("连接成功！");
                 // 如果连接成功，跳转到主界面
-                new ClientGUI();
+                ChatClient.setChatClientUI(new ClientGUI());
                 dispose(); // 关闭当前窗口
             } else {
                 statusLabel.setText("连接失败，请检查地址和端口！");
