@@ -1,0 +1,87 @@
+#世界频道
+[/register <用户名> <密码> <确认密码>] 来注册
+[/login <用户名> <密码>] 来登陆
+[/private <用户名> <消息>] 发送私密信息
+[/createChat <聊天名称>] 创建聊天
+[/joinChat <聊天名称>] 加入聊天
+[/leaveChat <聊天名称>] 离开聊天
+[/clientList] 获取用户列表
+欢迎 test920！
+[System]: [test920] 加入聊天
+[System]: [SKRaua] 加入聊天
+欢迎 test920！
+[System]: [test920] 加入聊天
+欢迎 test920！
+[System]: [test920] 加入聊天
+[test920]: tgtgrg
+[SKRaua]: sdfdaf
+欢迎 test920！
+[System]: [test920] 加入聊天
+[System]: [SKRaua] 离开聊天。
+[System]: [SKRaua] 加入聊天
+[System]: [SKRaua] 离开聊天。
+[System]: [SKRaua] 加入聊天
+[System]: [SKRaua] 离开聊天。
+[System]: [SKRaua] 加入聊天
+欢迎 test920！
+[System]: [test920] 加入聊天
+[System]: [SKRaua] 加入聊天
+[System]: [SKRaua] 离开聊天。
+[System]: [SKRaua] 加入聊天
+[test920]: fdfd
+[System]: [SKRaua] 离开聊天。
+欢迎 test920！
+[System]: [test920] 加入聊天
+[System]: [SKraua] 离开聊天。
+#920
+欢迎回来
+[test920]: fd
+[test920]: fdfd
+[test920]: dd
+[test920]: dd
+[test920]: dd
+欢迎回来
+欢迎回来
+欢迎回来
+欢迎回来
+[test920]: dfdfd
+[test920]: dfdfd
+[test920]: dfdfd
+[test920]: fdfdf
+[test920]: fdfdfd
+[test920]: dfdfd
+[test920]: dfdfdfd
+[test920]: ffdfd
+[test920]: fd
+[test920]: fdfd
+[test920]: fd
+[test920]: f
+[test920]: dfdfdf
+[test920]: kkkkk
+[test920]: jjjj
+[SKRaua]: dffdfdf
+欢迎回来
+[test920]: dfsafafd
+[SKRaua]: dfdsaf
+[SKRaua]: daffasf
+[SKRaua]: fdf
+[SKRaua]: dfdfadf
+[SKRaua]: fdafaf
+[SKRaua]: qewrewrq
+[SKRaua]: wqerqw
+[SKRaua]: ewqreqw
+[test920]: dfd
+[SKRaua]: safasdf
+[SKRaua]: sdafsadf
+[SKRaua]: dfdf
+欢迎回来
+[test920]: dfdf
+[SKRaua]: fdfd
+[SKRaua]: dfdf
+[SKRaua]: sadfa
+[SKRaua]: sdfds
+欢迎回来
+[test920]: fdfd
+[test920]: dfdf
+[test920]: wqerwqerqwe
+[test920]: wqrqw

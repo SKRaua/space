@@ -6,12 +6,4 @@
 [/joinChat <聊天名称>] 加入聊天
 [/leaveChat <聊天名称>] 离开聊天
 [/clientList] 获取用户列表
-用户名或密码错误
-格式错误
-欢迎 SKraua！
 [System]: [SKraua] 加入聊天
-[SKraua]: fgfdsa
-[SKraua]: fdsa
-[System]: [SKRaua] 离开聊天。
-#w
-群聊 w 创建成功

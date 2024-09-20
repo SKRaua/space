@@ -127,7 +127,7 @@ public class ClientHandler implements Runnable {
     private void registerHandler(TextMessage message) {
         String[] parts = message.getContent().split(" ", 3);
         if (parts.length == 3) {
-            String username = parts[0];
+            String username = parts[0];q
             String password1 = parts[1];
             String password2 = parts[2];
             ////////////////////////////////

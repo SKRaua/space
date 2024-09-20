@@ -40,8 +40,8 @@ public class ClientManager {
         try {
             chatNames = ChatServer.getDbOperations().getUserChats(client.getUsername());
             for (String chatName : chatNames) {// 添加有客户端在线的聊天并向在线客户端发送同步信息
+                chatHandlers.computeIfAbsent(chatName, k -> new HashSet<>()).add(client);
                 client.sendMessage("/chat " + chatName + " 欢迎回来");
-                chatHandlers.computeIfAbsent(chatName, k -> new HashSet<>()).add(findClient(client.getUsername()));
             }
         } catch (SQLException | IOException e) {
             Logger.log("加载群聊异常");

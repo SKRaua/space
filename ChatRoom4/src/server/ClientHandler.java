@@ -284,6 +284,7 @@ public class ClientHandler implements Runnable {
             if (socket != null && !socket.isClosed()) {
                 socket.close();
             }
+            ChatServer.getClientManager().removeClient(this);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
