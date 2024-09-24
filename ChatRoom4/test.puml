@@ -1,0 +1,37 @@
+@startuml
+
+class ChatClient {
+    - ClientIO clientIO
+    - ChatHistoryManager chatHistoryManager
+    - JFrame chatClientUI
+    - String username
+    + ChatClient(String serverAddress, String serverPort)
+    + static boolean connectTo(String serverAddress, int serverPort)
+    + static ClientIO getClientIO()
+    + static void setClientIO(ClientIO clientIO)
+    + static JFrame getChatClientUI()
+    + static void setChatClientUI(JFrame chatClientUI)
+    + static ChatHistoryManager getChatHistoryManager()
+    + static void setChatHistoryManager(ChatHistoryManager chatHistoryManager)
+    + static String getUsername()
+    + static void setUsername(String username)
+}
+
+class ClientIO {
+    + ClientIO(String serverAddress, int serverPort)
+}
+
+class ChatHistoryManager {
+    // ChatHistoryManager methods and attributes
+}
+
+class SelectServerGUI {
+    + SelectServerGUI(String serverAddress, String serverPort)
+}
+
+ChatClient "1" -- "1" ClientIO : uses
+ChatClient "1" -- "1" ChatHistoryManager : manages
+ChatClient "1" -- "1" JFrame : displays
+ChatClient "1" -- "1" SelectServerGUI : creates
+
+@enduml

@@ -6,4 +6,8 @@
 [/joinChat <聊天名称>] 加入聊天
 [/leaveChat <聊天名称>] 离开聊天
 [/clientList] 获取用户列表
-[System]: [SKraua] 加入聊天
+欢迎 test1！
+[System]: [test1] 加入聊天
+[System]: [SKRaua] 加入聊天
+[SKRaua]: 大家好
+[Private] to [SKRaua]: 你好

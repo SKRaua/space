@@ -1,0 +1,253 @@
+<mxfile host="65bd71144e">
+    <diagram id="aE3nNKvJqjUsKhSFBpMY" name="第 1 页">
+        <mxGraphModel dx="874" dy="466" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="5" value="ClientGUI" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=18;swimlaneLine=1;" parent="1" vertex="1">
+                    <mxGeometry x="554" y="1097" width="520" height="294" as="geometry">
+                        <mxRectangle x="660" y="710" width="110" height="50" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" value="- inputField: JTextField" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="26" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="- chatArea: JTextArea" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="52" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="- sendButton: JButton" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="78" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="- chatList: JList&lt;String&gt;&#10;&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="104" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="- chatListModel: DefaultListModel&lt;String&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="130" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="- currentChat: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="156" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="- currentChat: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="182" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="208" width="520" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="+ ChatClient(String serverAddress, String serverPort):" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="216" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="- initializeUI(String serverAddress, String serverPort): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="242" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="+ connectTo(String serverAddress, String serverPort): boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=18;" parent="5" vertex="1">
+                    <mxGeometry y="268" width="520" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="ChatHistoryManager" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-259" y="553" width="340" height="242" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" value="- FILE_PATH_SUFFIX: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="63" vertex="1">
+                    <mxGeometry y="26" width="340" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="90" value="- chatHistoryMap: Map&lt;String, StringBuilder&gt;&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="63" vertex="1">
+                    <mxGeometry y="52" width="340" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=18;" parent="63" vertex="1">
+                    <mxGeometry y="78" width="340" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="65" value="- appendMessage(String chatName, String message): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="63" vertex="1">
+                    <mxGeometry y="86" width="340" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="73" value="- getChatHistory(String chatName): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="63" vertex="1">
+                    <mxGeometry y="112" width="340" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="- deleteChatHistory(String chatName): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="63" vertex="1">
+                    <mxGeometry y="138" width="340" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="67" value="- loadChatHistory(String usrname): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="63" vertex="1">
+                    <mxGeometry y="164" width="340" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="68" value="- saveChatHistory(String usrname): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="63" vertex="1">
+                    <mxGeometry y="190" width="340" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="69" value="- ChatHistoryManager(): " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="63" vertex="1">
+                    <mxGeometry y="216" width="340" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="74" value="ChatClient" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;noLabel=0;portConstraintRotation=0;" parent="1" vertex="1">
+                    <mxGeometry x="-259" y="264" width="372" height="216" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" value="- clientIO: ClientIO" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="74" vertex="1">
+                    <mxGeometry y="26" width="372" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="87" value="- chatHistory: ChatHistoryManager" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="74" vertex="1">
+                    <mxGeometry y="52" width="372" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="88" value="- chatClientUI: JFrame" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="74" vertex="1">
+                    <mxGeometry y="78" width="372" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="89" value="- username: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="74" vertex="1">
+                    <mxGeometry y="104" width="372" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=18;" parent="74" vertex="1">
+                    <mxGeometry y="130" width="372" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="- initializeUI(String serverAddress, String serverPort): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="74" vertex="1">
+                    <mxGeometry y="138" width="372" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="84" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;+&amp;nbsp;connectTo(String serverAddress, String serverPort): boolean&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="74" vertex="1">
+                    <mxGeometry y="164" width="372" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" value="- ChatClient(String serverAddress, String serverPort): " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="74" vertex="1">
+                    <mxGeometry y="190" width="372" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="207" y="233" width="340" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="91" value="ClientGUI" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-256" y="851" width="480" height="372" as="geometry">
+                        <mxRectangle x="360" y="313" width="100" height="30" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="92" value="- inputField: JTextField" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="26" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="93" value="- chatArea: JTextArea" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="52" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="94" value="- sendButton: JButton" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="78" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="95" value="- chatList: JList (String) *Generic Type: Convert ( ) to the correct type*" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="104" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="96" value="- chatListModel: DefaultListModel (String) *Generic Type: Convert ( ) to the correct type*" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="130" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="97" value="- currentChat: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="156" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="119" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=18;" vertex="1" parent="91">
+                    <mxGeometry y="182" width="480" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="98" value="- buildGUI(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="190" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="99" value="- loadChatHistories(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="216" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="100" value="- addChat(String chatName): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="242" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="101" value="- switchChat(String chatName): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="268" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="102" value="- sendMessage(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="294" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="103" value="- startMessageReceiver(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="320" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="104" value="- ClientGUI(): " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="91" vertex="1">
+                    <mxGeometry y="346" width="480" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="105" value="ClientGUI" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1" collapsed="1">
+                    <mxGeometry x="754" y="129" width="90" height="26" as="geometry">
+                        <mxRectangle x="169" y="306" width="385" height="364" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="106" value="- inputField: JTextField" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="26" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="107" value="- chatArea: JTextArea" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="52" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="108" value="- sendButton: JButton" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="78" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="109" value="- chatList: JList (String) *Generic Type: Convert ( ) to the correct type*" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="104" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="110" value="- chatListModel: DefaultListModel (String) *Generic Type: Convert ( ) to the correct type*" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="130" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="111" value="- currentChat: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="156" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="112" value="- buildGUI(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="182" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="113" value="- loadChatHistories(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="208" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="114" value="- addChat(String chatName): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="234" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="115" value="- switchChat(String chatName): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="260" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="116" value="- sendMessage(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="286" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="117" value="- startMessageReceiver(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="312" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="118" value="- ClientGUI(): " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="105" vertex="1">
+                    <mxGeometry y="338" width="385" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="120" value="ClientIO" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-252" y="1270" width="239" height="164" as="geometry"/>
+                </mxCell>
+                <mxCell id="121" value="- socket: Socket" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="120">
+                    <mxGeometry y="26" width="239" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="122" value="- in: BufferedReader" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="120">
+                    <mxGeometry y="52" width="239" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="123" value="- out: PrintWriter" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="120">
+                    <mxGeometry y="78" width="239" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="125" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=18;" vertex="1" parent="120">
+                    <mxGeometry y="104" width="239" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="124" value="+ sendMessage(String message): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="120">
+                    <mxGeometry y="112" width="239" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="127" value="+ receiveMessage(): String message" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="120">
+                    <mxGeometry y="138" width="239" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="130" value="SelectServerGUI" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-252" y="1498" width="379" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="131" value="- addressField: JTextField" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="130">
+                    <mxGeometry y="26" width="379" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="132" value="- portField: JTextField" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="130">
+                    <mxGeometry y="52" width="379" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="133" value="- statusLabel: JLabel" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="130">
+                    <mxGeometry y="78" width="379" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="137" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=18;" vertex="1" parent="130">
+                    <mxGeometry y="104" width="379" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="134" value="- actionPerformed(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="130">
+                    <mxGeometry y="112" width="379" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="135" value="- actionPerformed(ActionEvent e): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="130">
+                    <mxGeometry y="138" width="379" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="136" value="- SelectServerGUI(String serverAddress, String serverPort): " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="130">
+                    <mxGeometry y="164" width="379" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="138" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=18;" vertex="1" parent="1">
+                    <mxGeometry x="-25" y="1847" width="239" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="139" value="StartClient" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-214" y="1722" width="163" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="140" value="+ main(String[] args) void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="139">
+                    <mxGeometry y="26" width="163" height="26" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

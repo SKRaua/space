@@ -52,9 +52,6 @@ public class SelectServerGUI extends JFrame {
         add(statusLabel);
 
         // 设置连接按钮监听事件
-        // connectButton.addActionListener(new ConnectButtonListener());
-        // addressField.addActionListener(new ConnectButtonListener());
-        // portField.addActionListener(new ConnectButtonListener());
         connectButton.addActionListener(e -> actionPerformed());
         addressField.addActionListener(e -> actionPerformed());
         portField.addActionListener(e -> actionPerformed());
@@ -85,33 +82,4 @@ public class SelectServerGUI extends JFrame {
             statusLabel.setText("连接失败，请检查地址和端口！");
         }
     }
-
-    // /**
-    // * 按钮点击后的事件监听器类
-    // */
-    // private class ConnectButtonListener implements ActionListener {
-    // @Override
-    // public void actionPerformed(ActionEvent e) {
-    // String serverAddress = addressField.getText();
-    // int serverPort;
-
-    // // 处理端口号输入错误
-    // try {
-    // serverPort = Integer.parseInt(portField.getText());
-    // } catch (NumberFormatException ex) {
-    // statusLabel.setText("端口号格式不正确！");
-    // return;
-    // }
-
-    // // 尝试连接服务器
-    // if (ChatClient.connectTo(serverAddress, serverPort)) {
-    // statusLabel.setText("连接成功！");
-    // // 如果连接成功，跳转到主界面
-    // ChatClient.setChatClientUI(new ClientGUI());
-    // dispose(); // 关闭当前窗口
-    // } else {
-    // statusLabel.setText("连接失败，请检查地址和端口！");
-    // }
-    // }
-    // }
 }

@@ -1,7 +1,7 @@
 package client;
 
 import java.io.*;
-import java.net.*;
+import java.net.Socket;
 
 /**
  * 聊天室客户端
